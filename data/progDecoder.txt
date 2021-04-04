@@ -1,0 +1,7 @@
+// Allgemeine Decoderdaten - herstellerunabhängig
+
+1:Basisadresse::1:99
+2:Minimalgeschwindigkeit::0:255
+3:Anfahrbeschleunigung:Höhere Werte=langsamer:0:10
+4:Bremsbeschleunigung:Höhere Werte=langsamer:0:10
+29:Konfigurationsdaten:Allgemeine Einstellungen:Fahrtrichtung normal|Fahrtrichtung invertiert,14 Fahrstufen|128 Fahrstufen,DCC|DCC+Analog

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<title>Franky M5SF</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="w3.css">
+
+<head>
+<script type="text/javascript" src="websocket.js"></script>
+</head>
+
+<body>
+
+<div class="w3-container"> 
+	<!-- https://www.w3schools.com/w3css/w3css_buttons.asp -->
+	<a href="system.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">System</a>
+	<a href="z21.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">Z21</a>
+	<a href="sniffer.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">X-Bus</a>
+	<a href="config.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">Einstellungen</a>
+	<a href="about.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">&Uuml;ber</a>
+</div>
+
+<div class="w3-panel w3-gray"><h1>Z21</h1></div> 
+
+<div class="w3-container">
+	<h2>Digitalsystem</h2>
+	<div class="w3-card-4">
+		<div class="w3-container w3-leftalign">
+			<ul class="w3-ul w3-hoverable">
+			<li>Gleisspannung		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_TRACKPOWERSTATE%</button></li>
+			<li>Kurzschluss			<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_SHORTCUT%</button></li>
+			<li>Nothalt				<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_EMERGENCYSTOP%</button></li>
+			<li>Programmiermodus	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_PROGMODE%</button></li>
+			<li>Strom Hauptgleis	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_CURRMAIN%</button></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="w3-container">
+	<h2>Zentrale</h2>
+	<div class="w3-card-4">
+		<div class="w3-container w3-leftalign">
+			<ul class="w3-ul w3-hoverable">
+		<li>Zentralentyp		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_HWVERSION%</button></li>
+		<li>Zentralen-ID		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_CSID%</button></li>
+		<li>Adresse				<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_ADDR%</button> (Port 21105)</li>
+		<li>Seriennummer		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_SERIALNUMBER%</button></li>
+		<li>Firmwareversion		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_FWVERSION%</button></li>
+		<li>X-Bus-Version		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_VERSION%</button></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="w3-container">
+	<h2>Broadcast-Flags</h2>
+	%FLAG_VALIDITY_HINT%
+	<div class="w3-card-4">
+		<div class="w3-container w3-leftalign">
+			<ul class="w3-ul w3-hoverable">		
+			<li>%BCF_BASIC% LAN_X_BC_TRACK_POWER_OFF, LAN_X_BC_TRACK_POWER_ON, LAN_X_BC_PROGRAMMING_MODE, LAN_X_BC_TRACK_SHORT_CIRCUIT, 
+					LAN_X_BC_STOPPED, LAN_X_LOCO_INFO (nur angemeldete Loks), LAN_X_TURNOUT_INFO (alle)</button></li>
+			<li>%BCF_RBUSFB%	R&uuml;ckmeldungen RBUS</button></li>
+			<li>%BCF_RC%	LAN_RAILCOM_DATACHANGED (nur angemeldete Loks)</button></li>
+			<li>%BCF_SYS%	LAN_SYSTEMSTATE_DATACHANGED</button></li>
+			<li>%BCF_ALLLOCO%	LAN_X_LOCO_INFO (alle Loks)</button></li>
+			<li>%BCF_ALLRC%	LAN_RAILCOM_DATACHANGED (alle Loks/Zubeh&ouml;r)</button></li>
+			<li>%BCF_CANFB%	R&uuml;ckmeldungen LAN_CAN_DETECTOR</button></li>
+			<li>%BCF_LNMSG%	Loconet-Meldungen ohne Lok-/Zubeh&ouml;rinfo</button></li>
+			<li>%BCF_LNLOCO%	Loconet OPC_LOCO_SPD/DIRF/SND/F912/EXP_CMD</button></li>
+			<li>%BCF_LNSwitch%	Loconet OPC_SW_REQ/REP/ACK/STATE</button></li>
+			<li>%BCF_LNFB%	R&uuml;ckmeldungen Loconet LAN_LOCONET_DETECTOR</button></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

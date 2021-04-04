@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<title>Franky M5SF</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="w3.css">
+
+<head>
+<script type="text/javascript" src="websocket.js"></script>
+</head>
+
+<body>
+
+<div class="w3-container"> 
+	<!-- https://www.w3schools.com/w3css/w3css_buttons.asp -->
+	<a href="system.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">System</a>
+	<a href="z21.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">Z21</a>
+	<a href="sniffer.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">X-Bus</a>
+	<a href="config.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">Einstellungen</a>
+	<a href="about.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">&Uuml;ber</a>
+</div>
+
+<div class="w3-panel w3-gray"><h1>&Uuml;ber</h1></div> 
+
+<div class="w3-container">
+	<h2>Autor</h2>
+	<div class="w3-card-4">
+		<div class="w3-container w3-leftalign">
+			(c) Frank Skowron 2020-2021
+		</div>
+	</div>
+</div>
+
+<div class="w3-container">
+	<h2>Onlinehilfe</h2>
+	<div class="w3-card-4">
+		<div class="w3-container w3-leftalign">
+			Hinweise zur Bedienung auf <a target="help" href="https://sites.google.com/view/frankydcc/startseite/franky-m5f/m5fbedienung">dieser Seite</a>
+		</div>
+	</div>
+</div>
+
+<div class="w3-container">
+	<h2>&Auml;nderungshistorie</h2>
+
+	<div class="w3-container w3-leftalign">
+		<table class="w3-table-all w3-hoverable">
+			<thead><tr class="w3-blue-grey"><th>Version</th><th>Datum</th><th>&Auml;nderung</th></tr></thead>
+			<tr><td>0.9.1</td><td>09.02.2021</td><td>Loksteuerung: Fremd&uuml;bernahme durch Blaudarstellung angezeigt. Beschleunigen/Bremsen wird weniger oft (nicht mehr?) unterbrochen nach REFRESH_CYCLE</td></tr>			
+			<tr><td>0.9.0</td><td>06.02.2021</td><td>CV-Programmierung (Beta - noch unfertig, PoM geht noch nicht)</td></tr>
+			<tr><td>0.8.1</td><td>31.01.2021</td><td>Versionspr&uuml;fung eingef&uuml;hrt um anzuzeigen, dass Sketch Data Upload vermutlich nicht gemacht wurde</td></tr>
+			<tr><td>0.8.0</td><td>29.01.2021</td><td>Roter Powerbutton links funktioniert wieder (jetzt nur noch einmal dr&uuml;cken!), das Abschalten &uuml;ber das Men&uuml; f&uuml;hrt auch nicht mehr zum DeepSleep (und somit Entladen), sondern (wieder) wie der rote Powerbutton</td></tr>
+			<tr><td>0.7.10</td><td>28.01.2021</td><td>Selbstausgel&ouml;stes LAN_X_GET_LOCO_INFO f&uuml;hrt nicht mehr zu Fremdbehandlung</td></tr>
+			<tr><td>0.7.9</td><td>15.01.2021</td><td>In Kan&auml;len gew&auml;hlte Lokadressen werden jetzt persistent gespeichert</td></tr>
+			<tr><td>0.7.8</td><td>12.01.2021</td><td>Status von Funktionen >5 wird jetzt korrekt dekodiert</td></tr>
+			<tr><td>0.7.7</td><td>11.01.2021</td><td>&Uuml;bernahme von Loks jetzt nahtlos (bestehende Fahrstufe wird &uuml;bernommen)</td></tr>
+			<tr><td>0.7.6</td><td>01.01.2021</td><td>Fehlerkorrekturen im Bereich Fahren (Fahrstufenver&auml;nderung)</td></tr>
+			<tr><td>0.7.5</td><td>22.10.2020</td><td>Ausschalten nun auch &uuml;ber Men&uuml;; Loknothalt </td></tr>
+			<tr><td>0.7.4</td><td>25.09.2020</td><td>Keinerlei neue Funktion, aber auf neue Z21-Lib angepasst</td></tr>
+			<tr><td>0.7.3</td><td>29.05.2020</td><td>Pushover-Lib hereingenommen</td></tr>
+			<tr><td>0.7.2</td><td>28.05.2020</td><td>Pushover &uuml;ber Weboberfl&auml;che konfigurierbar</td></tr>
+			<tr><td>0.7.1</td><td>27.05.2020</td><td>Hilfe auf Webseite verlinkt, hostname gesetzt, Persistenz Hintergrundbeleuchtung gefixt</td></tr>
+			<tr><td>0.7</td><td>05.05.2020</td><td>Neu: Konfigurationsseite</td></tr>
+			<tr><td>0.6</td><td>04.05.2020</td><td>Neu: Websocket, favicon</td></tr>
+			<tr><td>0.5</td><td>03.05.2020</td><td>Neu: Webserver</td></tr>
+			<tr><td>0.4</td><td>28.04.2020</td><td>Neu: Pushover</td></tr>
+		</table>
+	</div>
+</div>
+
+<div class="w3-container">
+	<h2>Known bugs</h2>
+		
+		<table class="w3-table-all w3-hoverable">
+			<thead><tr class="w3-blue-grey"><th>Als n&auml;chstes zu l&ouml;sen</th></tr></thead>
+				<tr><td>Kurzer Klickton als Feedback, wenn Zielfahrstufe erreicht</td></tr>
+		</table>
+					
+		<table class="w3-table-all w3-hoverable">
+			<thead><tr class="w3-blue-grey"><th>Workarounds</th></tr></thead>			
+			<tr><td>Beim Aktualisieren von Werten (aktuelle Fahrstufe, gestellte Fahrstra&szlig;e) bleiben Teile stehen</td></tr>
+			<tr><td>Nach Fremdsteuern mit h&ouml;chster Fahrstufe wird ung&uuml;ltige Fahrstufe 127 (Maximalwert ist 126!) angezeigt</td></tr>
+			<tr><td>Nach gewisser Anzahl von LAN_X_LOCO_INFO-Notifikationen erh&auml;lt Franky keine weiteren Notifikationen zur
+				Lok mehr. Getestet mit DR5000, vielleicht verh&auml;lt sich die Z21 anders. L&ouml;sung: Alle REFRESH_CYCLE ms 
+				(Standard: 5000ms = 5s), konfigurierbar in Configuration.h, wird LAN_X_GET_LOCO_INFO f&uuml;r die aktuelle Lok
+				ausgel&ouml;st, denn anschlie&szlig;end werden wieder Notifikationen empfangen. Gel&ouml;st seit Version 0.7.7</td></tr>
+		</table>
+		
+		<table class="w3-table-all w3-hoverable">
+			<thead><tr class="w3-blue-grey"><th>Bugs</th></tr></thead>
+			<tr><td>Wenn eine Lok &uuml;bernommen wurde, die schon vorher fuhr, ist Steuerung falsch (Zielgeschwindigkeit wird wohl nicht richtig gesetzt) - =-Kaskade?
+</td></tr>
+			<tr><td>R&uuml;ckmeldung von Aus/Ein erst, wenn von Franky aus wenigstens einmal Aus/Ein ausgel&ouml;st wurde. Behelfsweise sendet Franky daher anfangs LAN_X_SET_TRACK_POWER(Off), funktioniert aber noch nicht</td></tr>
+			<tr><td>DR5000: Infos nur von XN-Ger&auml;ten, nicht von X-Bus-Ger&auml;ten</td></tr>
+			</table>
+
+
+	</div>
+</div>
+
+</body>
+</html>
