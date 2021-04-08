@@ -13,6 +13,9 @@ class LocoPage: public Page, public Z21Observer {
 
   public:
     LocoPage(char navigable);
+
+    static Loco* currentLoco() { return selectedLoco; }
+
     virtual void setVisible(bool visible, bool clearScreen);
 
     virtual void buttonPressed(M5Btn::ButtonType btn);
@@ -30,6 +33,7 @@ class LocoPage: public Page, public Z21Observer {
 
     Loco* loco[MAX_LOCO_CHANNELS];
     int channel = MAX_LOCO_CHANNELS/2;
+    static Loco* selectedLoco;
 
     Numberbox* addr[MAX_LOCO_CHANNELS]; 
     int addressIndex;

@@ -19,6 +19,7 @@ class ProgPage: public Page, public Z21Observer {
   private:
     Numberbox* cvAddress;
     Numberbox* cvValue;
+    Numberbox* pomAddress;
 
 };
 

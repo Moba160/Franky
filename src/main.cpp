@@ -8,12 +8,19 @@
 
 #include <WiFi.h>       
 #include <WebServer.h>    
+#ifdef AUTOCONNECT
 #include <AutoConnect.h>
+WebServer Server;   
+#else
+extern void webconfig();
+#endif
 
-WebServer Server;          
+WiFiUDP Udp;
+
+#ifdef AUTOCONNECT
 AutoConnect  portal(Server);
-AutoConnectConfig config;
-WiFiUDP Udp;   
+AutoConnectConfig config(PRODUCT_NAME, ""); // AP-Name, Passwort
+#endif
 
 // ----------------------------------------------------------------------------------------------------
 // GUI
@@ -29,17 +36,6 @@ WiFiUDP Udp;
 // ----------------------------------------------------------------------------------------------------
 //
 
-  AutoConnectText header("text", "Publishing the WiFi signal strength to MQTT channel. RSSI value of ESP8266 to the channel created on ThingSpeak", "font-family:serif;color:#4682b4;size:20;");
-  ACText(caption1, "IP-Adresse der Z21");
-  ACSubmit(save, "SPEICHERN", "/z21_save");
-  AutoConnectInput input("z21Adress", "", "Z21-IP-Adresse", "192.168.178.200");
-  AutoConnectAux  z21settings("/z21settings", "Z21-Einstellungen", true, { header, caption1, input, save });
-
-  ACText(caption2, "Save parameters");
-  ACSubmit(start, "START", "/mqtt_start"); 
-  AutoConnectAux  aux2("/mqtt_save", "MQTT Setting", false, { caption2, start });
-  AutoConnectAux  aux3("/mqtt_start", "MQTT Start");
-
 void setup() {
 
   Pref::begin();
@@ -51,6 +47,7 @@ void setup() {
   
   M5.Speaker.begin(); // ohne: Pfeifton
 
+#ifdef AUTOCONNECT
   // Bildschirm, solang nicht WLAN verbunden
   M5.lcd.fillScreen(colorBgInConnection);
   M5.lcd.setTextColor(TFT_RED, colorBgInConnection);
@@ -76,9 +73,11 @@ void setup() {
   M5.lcd.setTextColor(colorFgInConnection, colorBgInConnection);
   M5.lcd.print(" auf.");
   M5.lcd.setTextSize(1);
+#endif
  
   ////////// Webserver
 
+#ifdef AUTOCONNECT
   config.beginTimeout = ConnWaitTime; // Max. Blockierung von portal.begin()
   config.title = PRODUCT_NAME; // Webseitentitel statt "AutoConnect"
   config.ota = AC_OTA_BUILTIN; 
@@ -93,10 +92,6 @@ void setup() {
   // https://hieromon.github.io/AutoConnect/menu.html: Menüeinträge gezielt ausblenden
   // https://hieromon.github.io/AutoConnect/menu.html: ac_ austauschen
 
-  // ------
-
-
-
   portal.join({z21settings, aux2, aux3 });
 
   portal.onConnect([](IPAddress& ipaddr){
@@ -106,8 +101,16 @@ void setup() {
 
   portal.begin();  //Verbinden kann dauern, keine Fortschrittsanzeige
   Serial.println("Webserver gestartet: " + WiFi.localIP().toString());
+#endif
 
-  Z21::setIPAddress(Pref::get(prefNameZ21IPAddr, "192.168.178.200"));
+#ifndef AUTOCONNECT
+  // Kommentare entfernen, um für Testzwecke AP-Modus zu erzwingen:
+  // Pref::set(prefNameSSID, "");
+  // Pref::set(prefNamePasswd, "");
+  webconfig(); 
+#endif
+
+  Z21::setIPAddress(Pref::get(prefNameZ21IPAddr, Z21_DEFAULT_ADDR));
 
   // GUI initialisieren
   Page::begin(&M5.lcd);
@@ -124,7 +127,9 @@ long lastHeartbeatSent = 0;
 void loop() {
 
   // WLAN-Verbindung managen
+#ifdef AUTOCONNECT
   portal.handleClient();
+#endif
 
   // Da die WLAN-Verbindung noch nicht unbedingt abgeschlossen ist,
   // kann der UDP-Server auch erst nach dem Verbindungsaufbau gestartet werden
@@ -140,7 +145,6 @@ void loop() {
     if (millis() - lastHeartbeatSent > Z21_HEARTBEAT) {
       Z21::heartbeat();
       lastHeartbeatSent = millis();
-      Z21::LAN_X_GET_LOCO_INFO(4);
       Z21::LAN_GET_BROADCASTFLAGS();
     }
 

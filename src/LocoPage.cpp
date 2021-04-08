@@ -17,6 +17,8 @@
 //   Serial.println();
 // }
 
+Loco* LocoPage::selectedLoco = Loco::addLoco(Pref::get(prefNameLocoChannelAddr + String("2"), "3").toInt());
+
 // ----------------------------------------------------------------------------------------------------
 //
 
@@ -44,7 +46,7 @@ LocoPage::LocoPage(char navigable) : Page(navigable) {
     loco[i] = Loco::addLoco(Pref::get(prefNameLocoChannelAddr + String(i), String(i+1)).toInt());
   }
 
-  transferData(true);
+  if (!blocked) transferData(true);
 
 }
 
@@ -202,6 +204,8 @@ void LocoPage::handleLocoChannel(int oldChannel, int channel) {
 
   addr[channel]->setFocus(hadFocus)->setVisible(true);
   if (oldChannel != channel) Z21::LAN_X_GET_LOCO_INFO(addr[channel]->getValue());
+
+  selectedLoco = loco[channel];
 
 }
 

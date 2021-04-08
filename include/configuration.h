@@ -8,6 +8,12 @@
 #define HOST_NAME "Franky" // z.B. für Netzwerk
 
 // ----------------------------------------------------------------------------------------------------
+// WLAN
+
+// Autoconnect nutzen. Wenn auskommentiert, eigene Implementierung verwenden
+// #define AUTOCONNECT
+
+// ----------------------------------------------------------------------------------------------------
 // Farben
 
 // Standardvorder- und -hintergrund
@@ -37,5 +43,17 @@
 
 #define MAX_LOCO_CHANNELS 5 // maximale Lokkanäle (eigentlich eigentständige Seiten), muss ungerade sein
 #define MAX_LOCOS 20 // in gleichzeitiger Steuerung mögliche Lokzahl
+
+// ----------------------------------------------------------------------------------------------------
+// Namen für gespeicherte Präferenzen
+// Es handelt sich hier nicht wirklich um Konfigurierbarkeit - unabhängig von den Namen bleibt
+// das Verhalten gleich
+
+#define prefNameSSID "ssid"
+#define prefNamePasswd "passwd"
+#define prefNameLocoChannelAddr "chAddr"
+#define prefNameZ21IPAddr "z21IPAddr"
+
+
 
 #endif

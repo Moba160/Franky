@@ -9,9 +9,6 @@
 
 #include <Preferences.h>
 
-#define prefNameLocoChannelAddr "chAddr"
-#define prefNameZ21IPAddr "z21IPAddr"
-
 class Pref {
 
   public:

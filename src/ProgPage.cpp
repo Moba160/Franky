@@ -1,4 +1,6 @@
 #include <ProgPage.h>
+#include <LocoPage.h>
+#include <M5Btn.h>
 #include <SPIFFS.h>
 #include "functions.h"
 #include "configuration.h"
@@ -9,8 +11,9 @@
 //
 
 ProgPage::ProgPage(char navigable) : Page(navigable) {
-  widgets[numWidgets++] = cvAddress = new Numberbox(tft, 0, "CV %d", 6, 1, 1, 1024, TFT_W/2, 40, CC_DATUM, 4);
-  widgets[numWidgets++] = cvValue =   new Numberbox(tft, 0, "%d", 3, 0, 1, 255, TFT_W/2, TFT_H/2, CC_DATUM, 8); 
+  widgets[numWidgets++] = cvAddress = new Numberbox(tft, 0, "CV %d", 20, 1, 1, 1024, TFT_W/2, 40, CC_DATUM, 4);
+  widgets[numWidgets++] = cvValue =   new Numberbox(tft, 0, "%d", 10, 0, 1, 255, TFT_W/2, TFT_H/2, CC_DATUM, 8); 
+  widgets[numWidgets++] = pomAddress = new Numberbox(tft, 0, "Adr. %d", 20, 3, 1, MaxLocoAddr, TFT_W/2, TFT_H*0.85, CC_DATUM, 2);
 
   cvAddress->setFocus(true);
 
@@ -29,8 +32,11 @@ void ProgPage::setVisible(bool visible, bool clearScreen) {
   M5Btn::setFunction(M5Btn::CC, FN_POMWRITE);
   
   M5Btn::setButtonBarActive(visible);
+  pomAddress->setValue(LocoPage::currentLoco()->addr)->setVisible(visible);
 
-  if (visible) navigationHint();
+  if (visible) {
+    navigationHint();
+  }
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -62,6 +68,9 @@ void ProgPage::buttonPressed(M5Btn::ButtonType button) {
 
   } else if (M5Btn::getFunction(button) == FN_CVWRITE) {
     Z21::LAN_X_CV_WRITE(cvAddress->getValue(), cvValue->getValue());
+
+  } else if (M5Btn::getFunction(button) == FN_POMWRITE) {
+    Z21::LAN_X_CV_POM_WRITE_BYTE(LocoPage::currentLoco()->addr, cvAddress->getValue(), cvValue->getValue());
   } 
 
 }
