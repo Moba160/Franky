@@ -39,3 +39,34 @@ connection.onmessage = function (e) {
 	}
 	
 };
+
+// Wird gerufen, wenn auf Seite ein Speichernbutton gedrückt wird
+// Durchsucht nach Präferenzen, die gespeichert = an den Server übermittelt werden müssen
+
+function save() {
+
+	var inputs = document.getElementsByTagName("input");
+
+	for (var i=0; i < inputs.length; i++) {
+		if(inputs[i].type != "submit") {
+			console.log(inputs[i].name + " " + inputs[i].value + "\n");
+			connection.send(inputs[i].name + "|" + inputs[i].value);
+		}
+	}
+	location.reload();
+}
+
+// Wird gerufen, wenn auf Seite ein Neustartbutton gedrückt wird
+// Weist Server an, Controller zu rebooten
+
+function reboot() {
+	connection.send("reboot");
+}
+
+// Wird gerufen, wenn auf Seite ein Resetbutton gedrückt wird
+// Weist Server an, Preference Store zu löschen
+
+function purge() {
+	connection.send("purge");
+	location.reload();
+}

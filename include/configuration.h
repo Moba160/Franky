@@ -4,8 +4,15 @@
 #include "Arduino.h"
 #include "Z21.h"
 
+#define PRODUCT_VERSION "1.0.1"
 #define PRODUCT_NAME "Franky"
 #define HOST_NAME "Franky" // z.B. für Netzwerk
+
+// ----------------------------------------------------------------------------------------------------
+// Features
+
+#define FEAT_OTA
+
 
 // ----------------------------------------------------------------------------------------------------
 // WLAN
@@ -51,8 +58,13 @@
 
 #define prefNameSSID "ssid"
 #define prefNamePasswd "passwd"
+
+#define prefNameFrankyIndex "frankyIndex"
+
 #define prefNameLocoChannelAddr "chAddr"
 #define prefNameZ21IPAddr "z21IPAddr"
+#define prefNamePOAPIKey "poAPIToken"
+#define prefNamePOUserKey "poUserKey"
 
 
 
