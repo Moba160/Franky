@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "Z21.h"
 
-#define PRODUCT_VERSION "1.0.1"
+#define PRODUCT_VERSION "1.1.0"
 #define PRODUCT_NAME "Franky"
 #define HOST_NAME "Franky" // z.B. für Netzwerk
 

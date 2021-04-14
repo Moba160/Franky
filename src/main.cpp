@@ -62,7 +62,7 @@ void setup() {
 //
 
 bool UDPServerInitialised = false;
-long lastHeartbeatSent = 0;
+long lastHeartbeatSent = -Z21_HEARTBEAT; // gleich anfangs Heartbeat erzwingen
 
 void loop() {
 
@@ -73,14 +73,12 @@ void loop() {
     if (!UDPServerInitialised) {
       Udp.begin(Z21_PORT);
       UDPServerInitialised = true;
-      // ez.addEvent(Z21::heartbeat, 1000); // regelmäßig mit Z21 sprechen
       Z21::init();
     }
 
     if (millis() - lastHeartbeatSent > Z21_HEARTBEAT) {
       Z21::heartbeat();
       lastHeartbeatSent = millis();
-      Z21::LAN_GET_BROADCASTFLAGS();
     }
 
   }

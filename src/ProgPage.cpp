@@ -80,6 +80,8 @@ void ProgPage::buttonPressed(M5Btn::ButtonType button) {
 
 void ProgPage::progResult(ProgResult result, int value) {
 
+  if (!visible) return;
+
   cvValue->setValue(value); 
   cvValue->setValueColor(result == Success ? colorValueOK : colorValueNOK);
   cvValue -> setVisible(true);

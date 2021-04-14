@@ -1,23 +1,4 @@
-<!DOCTYPE html>
-<html>
-<title>Franky M5SF</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="w3.css">
-
-<head>
-<script type="text/javascript" src="websocket.js"></script>
-</head>
-
-<body>
-
-<div class="w3-container"> 
-	<!-- https://www.w3schools.com/w3css/w3css_buttons.asp -->
-	<a href="system.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">System</a>
-	<a href="z21.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">Z21</a>
-	<a href="sniffer.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">X-Bus</a>
-	<a href="config.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">Einstellungen</a>
-	<a href="about.html" class="w3-btn w3-round-large w3-wide w3-teal w3-hover-gray">&Uuml;ber</a>
-</div>
+%MENU%
 
 <div class="w3-panel w3-gray"><h1>Z21</h1></div> 
 
@@ -31,6 +12,7 @@
 			<li>Nothalt				<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_EMERGENCYSTOP%</button></li>
 			<li>Programmiermodus	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_PROGMODE%</button></li>
 			<li>Strom Hauptgleis	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_CURRMAIN%</button></li>
+			<li>Strom Programmiergleis <button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_CURRPROG%</button></li>
 			</ul>
 		</div>
 	</div>
@@ -46,8 +28,10 @@
 		<li>Adresse				<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_ADDR%</button> (Port 21105)</li>
 		<li>Seriennummer		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_SERIALNUMBER%</button></li>
 		<li>Firmwareversion		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_FWVERSION%</button></li>
-		<li>X-Bus-Version		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_VERSION%</button></li>
-			</ul>
+		<li>Eingangsspannungsstatus	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_VOLTAGEOK%</button></li>
+		<li>Temperatur	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_TEMP%</button></li>
+		<li>Temperaturstatus	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_TEMPOK%</button></li>
+	</ul>
 		</div>
 	</div>
 </div>
@@ -55,7 +39,7 @@
 <div class="w3-container">
 	<h2>Broadcast-Flags</h2>
 	%FLAG_VALIDITY_HINT%
-	<div class="w3-card-4">
+	<div class="w3-card-4" style="display:%HIDE_FLAGS%">
 		<div class="w3-container w3-leftalign">
 			<ul class="w3-ul w3-hoverable">		
 			<li>%BCF_BASIC% LAN_X_BC_TRACK_POWER_OFF, LAN_X_BC_TRACK_POWER_ON, LAN_X_BC_PROGRAMMING_MODE, LAN_X_BC_TRACK_SHORT_CIRCUIT, 

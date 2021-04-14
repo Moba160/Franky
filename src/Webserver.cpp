@@ -51,7 +51,7 @@ void Webserver::webconfig() {
     // Index-Seite
     if (!inAPMode) {
 
-      request->send(SPIFFS, "/index.html", String(), false, processor);
+      request->send(SPIFFS, "/system.html", String(), false, processor);
 
     // Formular für Eingabe WLAN-Daten
     } else {
@@ -226,9 +226,12 @@ void Webserver::begin() {
     String realURL = url == "/ota" ? "/update" : url;
     String mimeType = page[i].mimeType;
 
+    if (page[i].anchor == LastPageMarker) break;
+
     if (page[i].mimeType == "text/html") {
       Serial.printf("Webseite %s -> %s registriert\n", url.c_str(), realURL.c_str());
-      webServer.on(url.c_str(), HTTP_GET, [realURL](AsyncWebServerRequest * request) {
+      webServer.on(url.c_str(), HTTP_GET, [url, realURL](AsyncWebServerRequest * request) {
+        Serial.printf("Request für %s real: %s\n", url.c_str(), realURL.c_str());
         request->send(SPIFFS, realURL, String(), false, processor);
       });
     } else {
@@ -260,6 +263,8 @@ void Webserver::begin() {
 
 String Webserver::processor(const String& var) {
 
+  Serial.printf("Replace %s\n", var.c_str());
+
   // ==== Spezielle Ersetzungen ===================================================================
 
   if (var == "PERCENT") {
@@ -286,6 +291,8 @@ String Webserver::processor(const String& var) {
 
     // einzelne Menüeinträge
     for (int i = 0; i < numPages; i++) {
+      if (page[i].anchor == LastPageMarker) break;
+      
       String realURL = page[i].url == "ota" ? "update" : page[i].url;
       if (page[i].anchor != "") {
         menu += "<a href=\"" + realURL + "\" class=\"w3-btn w3-round-large w3-teal w3-hover-gray\">" + page[i].anchor + "</a> ";
@@ -361,7 +368,7 @@ String Webserver::processor(const String& var) {
 
     // int ds = hs / 24; // Tage
 
-    sprintf(str, "%02ld:%02d:%02d", h, m, s);
+    sprintf(str, "%02d:%02d:%02d", h, m, s);
     return (String(str));
 
   } else if (var == "BATTERY_LEVEL") {
@@ -395,8 +402,6 @@ String Webserver::processor(const String& var) {
 #define PREF_PREFIX "PREF_"
 
   } else if (var.startsWith(PREF_PREFIX)) {
-
-    Serial.printf("==================== Pref %s angefragt\n", var.c_str());
 
     String elems[5];
     split(var, '_', elems); // PREF_type:size:maxlength_NAME
@@ -460,8 +465,6 @@ void Webserver::onWsEvent(AsyncWebSocket* server, AsyncWebSocketClient* client, 
 
   Webserver::wsClient = client;
 
-  Serial.printf("WS Event------------------------ %d\n", type);
-
   // Bei Aufruf der HTML-Seite oder Wiederaufruf (Tabwechsel)
   if (type == WS_EVT_CONNECT) {
   } else if (type == WS_EVT_DISCONNECT) {
@@ -472,8 +475,6 @@ void Webserver::onWsEvent(AsyncWebSocket* server, AsyncWebSocketClient* client, 
     buf[len] = 0;
     String received = String(buf);
     String elements[2];
-
-    Serial.printf("-------------- %s\n", received.c_str());
 
     // "purge" -> Preferences löschen
     if (received == "purge") {

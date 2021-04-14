@@ -9,7 +9,7 @@ class Textbox : public Widget {
 
         Textbox(TFT_eSPI* tft, int style, String value, int x, int y, int alignment, int textSize);
 
-        void setValue(String value) { this->value = value; setVisible(true); }
+        Widget* setValue(String value) { this->value = value; return this; }
         virtual Widget* setVisible(bool visible);
 
         virtual void buttonPressed(M5Btn::ButtonType button) {};

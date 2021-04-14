@@ -1,11 +1,14 @@
 #include "Page.h"
 #include "LocoPage.h"
 #include "ProgPage.h"
+#include "InfoPage.h"
+
 #include "M5Btn.h"
 #include "functions.h"
 #include <M5Stack.h>
 #include <configuration.h>
 #include <Z21.h>
+#include "Webserver.h"
 
 TFT_eSPI* Page::tft;
 
@@ -31,10 +34,11 @@ void Page::begin(TFT_eSPI* tft) {
 
   ProgPage* pp = new ProgPage(NAV_ALL);
   LocoPage* lp = new LocoPage(NAV_ALL);
+  InfoPage* ip = new InfoPage(NAV_ALL);
 
   // Initialisierung oben hat nicht funktioniert, Konstruktoren wurden nicht gerufen
   Page* tmp[PAGE_ROWS][PAGE_COLS] = {
-      {0, lp, pp}
+      {ip, lp, pp}
     };
 
     memcpy(navigationGrid, tmp, sizeof(tmp));
@@ -60,6 +64,7 @@ void Page::setVisible(bool visible, bool clearScreen) {
   this->visible = visible;
   M5Btn::clearFunctions(); M5Btn::setFunction(M5Btn::B, FN_FOCUS);
   if (clearScreen) tft->fillScreen(bgColor);
+  tft->setTextColor(fgColor, bgColor);
   for (int i=0; i<this->numWidgets; i++) this->widgets[i]->setVisible(visible);
 
 }
@@ -195,6 +200,8 @@ void buttonPressed(M5Btn::ButtonType btn) {
 
 void Page::trackPowerStateChanged(bool trackPowerOff) {
   navigationHint();
+  Serial.printf("Hier sollte Webseitenzupdate stehen %s\n", trackPowerOff ? "Aus" : "Ein");
+  Webserver::send("Z21_TRACKPOWERSTATE", trackPowerOff ? "Aus" : "Ein");
 }
 
 void Page::progModeStateChanged(bool progModeOff) {

@@ -15,7 +15,8 @@
 	<h2>Onlinehilfe</h2>
 	<div class="w3-card-4">
 		<div class="w3-container w3-leftalign">
-			Hinweise zur Bedienung auf <a target="help" href="https://sites.google.com/view/frankydcc/startseite/franky-2/frankybedienung">dieser Seite</a>
+			Hinweise zur Bedienung auf <a target="help" href="https://sites.google.com/view/frankydcc/startseite/franky-2/frankybedienung">dieser Seite</a>. 
+			Bei Problemen bin ich im <a href="https://www.stummiforum.de/viewtopic.php?f=7&t=177695">Stummiforum</a> erreichbar.
 		</div>
 	</div>
 </div>
@@ -26,6 +27,7 @@
 	<div class="w3-container w3-leftalign">
 		<table class="w3-table-all w3-hoverable">
 			<thead><tr class="w3-blue-grey"><th>Version</th><th>Datum</th><th>&Auml;nderung</th></tr></thead>
+			<tr><td>1.1.0</td><td>4.04.2021</td><td>Neue Bedienseite (Informationen über Netzwerk, Z21 und letzte Kommandos)</td></tr>
 			<tr><td>1.0.1</td><td>12.04.2021</td><td>Es kann jetzt mehr als ein Franky im Netz sein (siehe Konfigurationseite)</td></tr>
 			<tr><td>1.0.0</td><td>April 2021</td><td>Umstieg auf PlatformIO und Neugestaltung der Software und des Bedienkonzeptes. Zwar ist noch nicht alles wieder aktiv, das wird aber schrittweise aufgebaut</td></tr>			
 			<tr><td>0.9.1</td><td>09.02.2021</td><td>Loksteuerung: Fremd&uuml;bernahme durch Blaudarstellung angezeigt. Beschleunigen/Bremsen wird weniger oft (nicht mehr?) unterbrochen nach REFRESH_CYCLE</td></tr>			
@@ -51,17 +53,20 @@
 </div>
 
 <div class="w3-container">
-	<h2>Known bugs</h2>
+	<h2>Known bugs oder Unsch&ouml;nheiten</h2>
 		
 		<table class="w3-table-all w3-hoverable">
 			<thead><tr class="w3-blue-grey"><th>Verbesserungen</th></tr></thead>
 				<tr><td>Linker Rand auf Webseiten: Einr&uuml;cken, ebenso Rand oben</td></tr>
+				<tr><td>Webseite: Vereinheitlichung Layout: z.B. auf Z21-Seite Button-Style der Werte, anderswo nicht</td></tr>
+				<tr><td>&amp;uml;-Notation sparen -> ISO-Code der Seite setzen, dann vsl. auch in Z21-Trace Umlaute m&ouml;glich</td></tde></tr>
 		</table>
 					
 		<table class="w3-table-all w3-hoverable">
-			<thead><tr class="w3-blue-grey"><th>Known bugs</th></tr></thead>			
+			<thead><tr class="w3-blue-grey"><th>Known bugs</th></tr></thead>	
+			<tr><td>Webseite: Gleisspannungszustand falsch dargestellt (immer AUS), generell Flags dort noch unzuverl&auml;ssig</td></tr>		
 			<tr><td>Wenn About-Seite immer wieder neu geladen wird, sinkt Heapgr&ouml;&szlig;e; Testen, ob Memory Leak</td></tr>
-			<tr><td>Datei / registriert () - welche Dateien sind das, unbehandelte Typen?</td></tr>
+			<tr><td>Z21-Trace: "  [ 26ms LAN_X_STATUS_CHANGED )" mit unbalancierter schlie&szligender Klammer. Offenbar ist buf nicht initialisiert, Zeile 460</td></tr>
 			<tr><td>Fahren: Nach Adresswechsel hat neue - bisher unbenutzte Lok - die Daten der alten!!! Nicht immer reproduzierbar ...</td></tr>
 			<tr><td>Longpress RotaryButton manchmal mit scheinbar hinterhergeschobenem shortpress. Liegt nicht an M5Button, irgendwo dahinter. Prellt der Regler vielleicht doch?</td></tr>
 		</table>

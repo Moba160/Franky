@@ -213,6 +213,7 @@ void LocoPage::handleLocoChannel(int oldChannel, int channel) {
 //
 
 void LocoPage::locoInfoChanged(int addr, Direction dir, int fst, bool takenOver, int numSpeedSteps, bool f[]) {
+  if (!visible) return;
   if (loco[channel]->addr == addr) {
     direction->setValue(dir == Forward)->setVisible(true);
     headlights->setValue(f[0])->setVisible(true);
