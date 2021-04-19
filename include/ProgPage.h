@@ -1,6 +1,7 @@
 #ifndef PROGPAGE_H
 #define PROGPAGE_H
 
+#include "Pref.h"
 #include "Page.h"
 #include "Numberbox.h"
 #include "Z21Observer.h"
@@ -15,6 +16,8 @@ class ProgPage: public Page, public Z21Observer {
 
 
     virtual void buttonPressed(M5Btn::ButtonType button);
+
+    virtual bool isBeta() override { return true; }
 
   private:
     Numberbox* cvAddress;

@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "Z21.h"
 
-#define PRODUCT_VERSION "1.1.0"
+#define PRODUCT_VERSION "1.1.1"
 #define PRODUCT_NAME "Franky"
 #define HOST_NAME "Franky" // z.B. für Netzwerk
 
@@ -56,6 +56,8 @@
 // Es handelt sich hier nicht wirklich um Konfigurierbarkeit - unabhängig von den Namen bleibt
 // das Verhalten gleich
 
+#define prefNameBeta "beta"
+
 #define prefNameSSID "ssid"
 #define prefNamePasswd "passwd"
 
@@ -66,6 +68,6 @@
 #define prefNamePOAPIKey "poAPIToken"
 #define prefNamePOUserKey "poUserKey"
 
-
+#define prefNameGerdOffs "GerdOffs"
 
 #endif

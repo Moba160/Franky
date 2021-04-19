@@ -52,6 +52,9 @@ void setup() {
   // Z21-Adresse bekanntgeben (kann über Webserver geändert werden)
   Z21::setIPAddress(Pref::get(prefNameZ21IPAddr, Z21_DEFAULT_ADDR));
 
+  // Adressoffset?
+  Z21::setAddrOffs(Pref::get(prefNameGerdOffs, "0").toInt());
+
   // GUI initialisieren
   Page::begin(&M5.lcd);
   if (!Page::isBlocked()) Page::currentPage()->setVisible(true, true);

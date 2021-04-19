@@ -278,6 +278,7 @@ String Webserver::processor(const String& var) {
   } else if (var == "MENU") {
     String menu =
       "<!DOCTYPE html>"
+      "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">"
       "<html>"
       "<title>" + String(PRODUCT_NAME) + "</title>"
       "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
@@ -352,7 +353,7 @@ String Webserver::processor(const String& var) {
 
     int ds = hs / 24;
 
-    sprintf(str, "%d %s %02ld:%02d:%02d", ds, ds != 1 ? "Tage" : "Tag", h, m, s);
+    sprintf(str, "%d %s %02d:%02d:%02d", ds, ds != 1 ? "Tage" : "Tag", h, m, s);
     return (String(str));
 
   } else if (var == "UPTIME") {
@@ -435,12 +436,20 @@ String Webserver::processor(const String& var) {
 // ----------------------------------------------------------------------------------------------------
 // Erzeugt Inputbox für <name>
 String Webserver::inputBox(String name, String type, int size, int maxlength) {
+
+  String value;
+  if (type == "checkbox") {
+    value = Pref::get(name) == ON ? "checked" : "";
+  } else {
+    value = "value=\"" + Pref::get(name) + "\"";
+  }
+
   return
     "<input name=\"" + name + "\" "
     "type=\"" + type + "\" "
     "size=\"" + size + "\" "
-    "maxlength=\"" + maxlength + "\" "
-    "value=\"" + Pref::get(name) + "\""
+    "maxlength=\"" + maxlength + "\" " +
+    value +
     "/>";
 }
 
@@ -512,10 +521,3 @@ void Webserver::send(String s) {
 void Webserver::send(String parameter, String value) {
   send(parameter + " = " + value);
 }
-
-// ----------------------------------------------------------------------------------------------------
-// X-Bus-Trace auf Webseite anzeigen
-
-// void Z21::trace(byte toZ21, long timeDiff, String message, String parameter) {
-//   Webserver::send(String(toZ21 == TO_Z21 ? "&nbsp;&nbsp;&gt;" : "&lt;") + "|" + timeDiff + "|" + message + "|" + parameter);
-// }

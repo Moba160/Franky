@@ -54,8 +54,10 @@ class Page : public Z21Observer {
 
         static void handlePageSwitchAndFocus(M5Btn::ButtonType button);
         virtual void buttonPressed(M5Btn::ButtonType btn) {};
+
+        virtual bool isBeta() { return false; }
         
-        static Page* currentPage();
+        static Page* currentPage() { return navigationGrid[row][col]; }
         Widget* focussedWidget();
 
         static int bgColor;
@@ -81,6 +83,8 @@ class Page : public Z21Observer {
 
 
   private:
+  
+    static bool isNavigable(int navigation);
     char navigable;
 };
 

@@ -48,8 +48,11 @@ function save() {
 	var inputs = document.getElementsByTagName("input");
 
 	for (var i=0; i < inputs.length; i++) {
-		if(inputs[i].type != "submit") {
-			console.log(inputs[i].name + " " + inputs[i].value + "\n");
+		console.log(inputs[i].type + "\n");
+		if(inputs[i].type == "checkbox") {
+			connection.send(inputs[i].name + "|" + (inputs[i].checked ? "on" : "off"));
+		} else if(inputs[i].type != "submit") {
+			console.log(inputs[i].name + "=" + inputs[i].value + "\n");
 			connection.send(inputs[i].name + "|" + inputs[i].value);
 		}
 	}

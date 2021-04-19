@@ -48,7 +48,7 @@ void InfoPage::update(String message, String parameters) {
 }
 
 void InfoPage::traceEvent(FromToZ21 direction, long diffLastSentReceived, String message, String parameters) {
-  lastMessage = (direction == fromZ21 ? "<" : ">") + String(diffLastSentReceived) + "ms " + message;
+  lastMessage = (direction == fromZ21 ? ">" : "<") + String(diffLastSentReceived) + "ms " + message;
   lastParameters = parameters;
   if (visible) update(lastMessage, parameters);
 }

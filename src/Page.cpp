@@ -87,38 +87,66 @@ void Page::navigationHint() {
   // Status: Balken oben
   tft->fillRect(0, 0, TFT_W, NAV_IND_WIDTH, color);
 
-  // Am jeweiligen Rand Navigationshinweis (dass es dort eine Nachbarseite gibt)
+  if (isBeta()) {
+    tft->setTextColor(TFT_RED, bgColor);
+    if (Pref::get("beta") == ON && isBeta()) tft->drawString(" Beta ", TFT_W/2, 5, 2);
+  }
+
+  // Am jeweiligen Rand Navigationshinweis (dass es dort eine Nachbarseite gibt):
 
   // oben
-  if (row > 0) {
-    if (navigationGrid[row-1][col] != 0) 
-      if ((currentPage()->navigable & NAV_UP))
-        tft->fillRect(tft->width()/2-NAV_IND_LEN/2, 0, NAV_IND_LEN, NAV_IND_WIDTH, fgColor);
-  }
+  if (isNavigable(NAV_UP)) 
+    tft->fillRect(tft->width()/2-NAV_IND_LEN/2, 0, NAV_IND_LEN, NAV_IND_WIDTH, fgColor);
+
   // unten
-  if (row < PAGE_ROWS - 1) {
-    if (navigationGrid[row+1][col] != 0) 
-      if ((currentPage()->navigable & NAV_DOWN))
-        tft->fillRect(tft->width()/2-NAV_IND_LEN/2, tft->height()-NAV_IND_WIDTH+1, NAV_IND_LEN, NAV_IND_WIDTH, fgColor);
-  }
+  if (isNavigable(NAV_DOWN)) 
+    tft->fillRect(tft->width()/2-NAV_IND_LEN/2, tft->height()-NAV_IND_WIDTH+1, NAV_IND_LEN, NAV_IND_WIDTH, fgColor);
+
   // links
-  if (col > 0) {
-    if (navigationGrid[row][col-1] != 0) 
-      if ((currentPage()->navigable & NAV_LEFT))
-        tft->fillRect(0, tft->height()/2-NAV_IND_LEN/2, NAV_IND_WIDTH, NAV_IND_LEN, fgColor);
-  } 
-   // rechts
-  if (col < PAGE_COLS - 1) {
-    if (navigationGrid[row][col+1] != 0)
-      if ((currentPage()->navigable & NAV_RIGHT))
-        tft->fillRect(tft->width()-NAV_IND_WIDTH+1, tft->height()/2-NAV_IND_LEN/2, NAV_IND_WIDTH, NAV_IND_LEN, fgColor);
-  } 
+  if (isNavigable(NAV_LEFT)) 
+    tft->fillRect(0, tft->height()/2-NAV_IND_LEN/2, NAV_IND_WIDTH, NAV_IND_LEN, fgColor);
+  
+  // rechts
+  if (isNavigable(NAV_RIGHT)) 
+    tft->fillRect(tft->width()-NAV_IND_WIDTH+1, tft->height()/2-NAV_IND_LEN/2, NAV_IND_WIDTH, NAV_IND_LEN, fgColor);
 
 }
 
-Page* Page::currentPage() {
-  return navigationGrid[row][col];
+// ----------------------------------------------------------------------------------------------------
+//
+
+bool Page::isNavigable(int navigation) {
+
+  bool navigable = false;
+  int newCol = col, newRow = row;
+
+  switch(navigation) {
+    case NAV_UP:
+      if (row > 0) if (navigationGrid[newRow = row-1][col] != 0) if (currentPage()->navigable & NAV_UP) navigable = true;
+      break;
+    case NAV_DOWN:
+      if (row < PAGE_ROWS - 1) if (navigationGrid[newRow = row+1][col] != 0) if (currentPage()->navigable & NAV_DOWN) navigable = true;
+      break;
+    case NAV_LEFT:
+      if (col > 0) if (navigationGrid[row][newCol = col-1] != 0) if (currentPage()->navigable & NAV_LEFT) navigable = true;
+      break;
+    case NAV_RIGHT:
+      if (col < PAGE_COLS - 1) if (navigationGrid[row][newCol = col+1] != 0) if (currentPage()->navigable & NAV_RIGHT) navigable = true;
+      break;
+    default: ; // Warnung unterdrücken
+  }
+
+  // In der Betaversion sind alle Seiten zugreifbar
+  if (Pref::get(prefNameBeta) == ON) {
+    return navigable;
+
+  // sonst nur die, die nicht individuell als Beta gekennzeichnet sind
+  } else {
+    return navigable && !(navigationGrid[newRow][newCol]->isBeta());
+  }
+  
 }
+
 
 // ----------------------------------------------------------------------------------------------------
 //
@@ -132,26 +160,17 @@ void Page::handlePageSwitchAndFocus(M5Btn::ButtonType button) {
   // Umschalten auf Nachbarseite, sofern diese existiert (zweites if) und
   // wenn dorthin navigieren erlaubt (letztes if)
 
-  if (button == M5Btn::AB) { // nach oben
-      if (row > 0) if (navigationGrid[row - 1][col] != 0) {
-        if ((currentPage()->navigable & NAV_UP) > 0) row--;
-      }
-  } else if (button == M5Btn::BC) { // nach unten
-      if (row < PAGE_ROWS - 1) if (navigationGrid[row + 1][col] != 0) {
-        if ((currentPage()->navigable & NAV_DOWN) > 0) row++;
-      }
-  } else if (button == M5Btn::CA) { // nach links
-    Serial.println("nach links");
+  // nach oben
+  if (button == M5Btn::AB && isNavigable(NAV_UP)) row--;
 
-      if (col > 0) if (navigationGrid[row][col - 1] != 0) {
-        if ((currentPage()->navigable & NAV_LEFT) > 0) col--;
-      }
-  } else if (button == M5Btn::AC) { // nach rechts
-  Serial.println("nach rechts");
-      if (col < PAGE_COLS - 1) if (navigationGrid[row][col + 1] != 0) {
-        if ((currentPage()->navigable & NAV_RIGHT) > 0) col++;
-      }
-  }
+  // nach unten
+  else if (button == M5Btn::BC && isNavigable(NAV_DOWN)) row++;
+
+  // nach links
+  else if (button == M5Btn::CA && isNavigable(NAV_LEFT)) col--;
+  
+  // nach rechts
+  else if (button == M5Btn::AC && isNavigable(NAV_RIGHT)) col++;
 
   // Falls es neue Seite gibt, alte verbergen und neue anzeigen
   if (oldCol != col || oldRow != row) {
@@ -200,7 +219,7 @@ void buttonPressed(M5Btn::ButtonType btn) {
 
 void Page::trackPowerStateChanged(bool trackPowerOff) {
   navigationHint();
-  Serial.printf("Hier sollte Webseitenzupdate stehen %s\n", trackPowerOff ? "Aus" : "Ein");
+  Serial.printf("Hier sollte Webseitenupdate stehen %s\n", trackPowerOff ? "Aus" : "Ein");
   Webserver::send("Z21_TRACKPOWERSTATE", trackPowerOff ? "Aus" : "Ein");
 }
 

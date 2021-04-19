@@ -3,6 +3,8 @@
 
 #include <ESPAsyncWebServer.h>
 
+#define ON "on" // Checkboxen: aktivierter Status, wird so in Prefs gespeichert
+
 class Webserver {
 
   public:
