@@ -2,6 +2,7 @@
 #include "LocoPage.h"
 #include "ProgPage.h"
 #include "InfoPage.h"
+#include "TrackPage.h"
 
 #include "M5Btn.h"
 #include "functions.h"
@@ -35,9 +36,11 @@ void Page::begin(TFT_eSPI* tft) {
   ProgPage* pp = new ProgPage(NAV_ALL);
   LocoPage* lp = new LocoPage(NAV_ALL);
   InfoPage* ip = new InfoPage(NAV_ALL);
+  TrackPage *tp = new TrackPage(NAV_ALL);
 
   // Initialisierung oben hat nicht funktioniert, Konstruktoren wurden nicht gerufen
   Page* tmp[PAGE_ROWS][PAGE_COLS] = {
+      {0, tp, 0},
       {ip, lp, pp}
     };
 
@@ -89,7 +92,8 @@ void Page::navigationHint() {
 
   if (isBeta()) {
     tft->setTextColor(TFT_RED, bgColor);
-    if (Pref::get("beta") == ON && isBeta()) tft->drawString(" Beta ", TFT_W/2, 5, 2);
+    tft->setTextDatum(TC_DATUM);
+    if (Pref::get("beta") == ON && isBeta()) tft->drawString(" Beta ", TFT_W/2, 0, 2);
   }
 
   // Am jeweiligen Rand Navigationshinweis (dass es dort eine Nachbarseite gibt):
@@ -179,9 +183,9 @@ void Page::handlePageSwitchAndFocus(M5Btn::ButtonType button) {
   }
   
   // Fokuswechsel
-  if (button == M5Btn::B) {
+  if (button == M5Btn::B && M5Btn::getFunction(button) == FN_FOCUS) {
     
-    oldFocusIndex = -1;
+    oldFocusIndex = -1; newFocusIndex = -1;
 
     for (int i=0; i<currentPage()->numWidgets; i++) 
       if (currentPage()->widgets[i]->hasFocus()) { oldFocusIndex = i; break; }
@@ -192,10 +196,16 @@ void Page::handlePageSwitchAndFocus(M5Btn::ButtonType button) {
     }
 
     // neu zeichnen, dabei wandert Fokusdarstellung auf nächstes Widget
-    if (oldFocusIndex != -1) { currentPage()->widgets[oldFocusIndex]->setFocus(false); currentPage()->widgets[oldFocusIndex]->setVisible(true); }
-    currentPage()->widgets[newFocusIndex]->setFocus(true);  currentPage()->widgets[newFocusIndex]->setVisible(true);
+    if (oldFocusIndex != -1) { 
+      currentPage()->widgets[oldFocusIndex]->setFocus(false); 
+      currentPage()->widgets[oldFocusIndex]->setVisible(true); 
+    }
 
-    if (oldFocusIndex != newFocusIndex) currentPage()->focusChanged();
+    if (newFocusIndex != -1) { // falls es kein fokussiertes Widget gibt
+      currentPage()->widgets[newFocusIndex]->setFocus(true);
+      currentPage()->widgets[newFocusIndex]->setVisible(true);
+      if (oldFocusIndex != newFocusIndex) currentPage()->focusChanged();
+    }
  
   } 
 }

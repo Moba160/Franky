@@ -16,7 +16,7 @@
 
 // Dimension des Seiten-Arrays, es gibt also (maximal) PAGE_ROWS x PAGE_COLS Seiten,
 // wobei nicht zu besetzende Plätze im Array mit 0 gekennzeichnet werden
-#define PAGE_ROWS 1
+#define PAGE_ROWS 2
 #define PAGE_COLS 3
 
 // scheinbar verdreht

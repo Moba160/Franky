@@ -5,6 +5,7 @@
 #include <M5Stack.h>
 #include <M5Btn.h>
 #include <Pref.h>
+#include "Route.h"
 #include <configuration.h>
 
 // ----------------------------------------------------------------------------------------------------
@@ -52,8 +53,11 @@ void setup() {
   // Z21-Adresse bekanntgeben (kann über Webserver geändert werden)
   Z21::setIPAddress(Pref::get(prefNameZ21IPAddr, Z21_DEFAULT_ADDR));
 
-  // Adressoffset?
-  Z21::setAddrOffs(Pref::get(prefNameGerdOffs, "0").toInt());
+  // Adressoffset, falls Gerds Gleisbox?
+  Z21::setAddrOffs(Pref::get(prefNameGerdOffs, "off") == "on" ? 0x2000 : 0);
+
+  // Topologie initialisieren
+  Route::begin();
 
   // GUI initialisieren
   Page::begin(&M5.lcd);

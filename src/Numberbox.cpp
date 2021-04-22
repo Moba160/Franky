@@ -21,7 +21,7 @@ Widget* Numberbox::setVisible(bool visible) {
     if (visible) {
         tft->setTextDatum(alignment);
         if (selected) {
-            if (focus) tft->setTextColor( bgColor, focusColor); 
+            if (focus) tft->setTextColor(bgColor, focusColor); 
             else tft->setTextColor(bgColor, fgColor); 
         } else {
             if (focus) tft->setTextColor(focusColor, bgColor); 

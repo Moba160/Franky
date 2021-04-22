@@ -30,4 +30,19 @@
 // PoM Write
 #define FN_POMWRITE "PoM Write"
 
+///// Gleisbildseite
+
+#define FN_EINF_HL "Halle ->"   // Filter Einfahrt aus Halle
+#define FN_AUSF_HL "<- Halle"   // Filter Ausfahrt nach Halle
+#define FN_DURCHF "Durchfahrt"  // Filter Durchfahrt
+#define FN_FILT2 "..."          // Umschalten auf anderen Filter
+#define FN_EINF_AHB "<- Ahb"    // Filter Einfahrt aus Ahb
+#define FN_AUSF_AHB "Ahb ->"    // Filter Ausfahrt nach Ahb
+
+#define FN_SH_TOP   "Oben"   // Filter Rangieren "oben"
+#define FN_SH_Q     "\\_/"   // Filter Rangieren "Rest"
+#define FN_FILT1 ".."           // Umschalten auf anderen Filter
+#define FN_SH_S     "<S>"    // Filter Rangieren S-Bahn
+#define FN_SH_BOT   "Unten"  // Filter Rangieren "unten"
+
 #endif

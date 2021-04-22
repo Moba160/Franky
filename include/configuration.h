@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "Z21.h"
 
-#define PRODUCT_VERSION "1.1.1"
+#define PRODUCT_VERSION "1.2.0"
 #define PRODUCT_NAME "Franky"
 #define HOST_NAME "Franky" // z.B. für Netzwerk
 
@@ -50,6 +50,28 @@
 
 #define MAX_LOCO_CHANNELS 5 // maximale Lokkanäle (eigentlich eigentständige Seiten), muss ungerade sein
 #define MAX_LOCOS 20 // in gleichzeitiger Steuerung mögliche Lokzahl
+// Zyklus, alle wieviel ms die Lokbeschleunigung ausgerechnet wird
+#define LOCO_CYCLE 250 
+
+// ----------------------------------------------------------------------------------------------------
+// Schalten
+
+// Anzahl maximal verwalteter Weichen
+#define MAX_ACCESSORIES 70
+
+// Gleislinienfarbe
+#define TRACK_COLOR colorForeground
+
+// dto für hervorgehobenen Fahrstraße (Fahrstraßenwahl)
+#define SELECTED_ROUTE_COLOR TFT_RED
+
+// dto für den bereits gestellten Fahrstraßenteil
+#define SET_ROUTE_COLOR TFT_GREEN
+
+// Verzögerung zwischen Weichen-/Signalumlauf
+#define SWITCH_DELAY 500
+
+
 
 // ----------------------------------------------------------------------------------------------------
 // Namen für gespeicherte Präferenzen
