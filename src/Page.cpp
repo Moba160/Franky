@@ -47,7 +47,7 @@ void Page::begin(TFT_eSPI* tft) {
     memcpy(navigationGrid, tmp, sizeof(tmp));
 
     // initiale Seite
-    row = 0; col = 1; 
+    row = 1; col = 1; 
 }
 
 // ----------------------------------------------------------------------------------------------------
