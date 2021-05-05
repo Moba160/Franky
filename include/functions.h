@@ -27,7 +27,7 @@
 #define FN_CHANGE_TARGETSPEED "Automatisch"
 
 // Adresse ändern
-#define FN_CHANGE_ADDR "Adr"
+#define FN_CHANGE_ADDR "Adresse"
 
 // Softkeyebenen umschalten auf LocoPage
 #define FN_DELTA_START "Delta >"
