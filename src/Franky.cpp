@@ -6,13 +6,13 @@
 // ----------------------------------------------------------------------------------------------------
 // Webserver.cpp ist allgemein geschrieben. Die Franky-Spezifik findet hier statt
 
-
-
 // ----------------------------------------------------------------------------------------------------
 // Ersetzt %VAR% in HTML-Seite
 
-#define FlagYes "<button class='w3-btn w3-circle w3-teal w3-tiny'>Ein</button>"
-#define FlagNo "<button class='w3-btn w3-circle w3-gray w3-tiny'>Aus</button>"
+String yesno(String id, bool yes) {
+  if (yes) return "<button class='w3-btn w3-circle w3-teal w3-tiny' id='" + id + "'>Ein</button>";
+  else return "<button class='w3-btn w3-circle w3-gray w3-tiny' id='" + id + "'>Aus</button>";
+}
 
 String htmlPageReplace(String var) {
 
@@ -58,16 +58,16 @@ String htmlPageReplace(String var) {
     return Z21::lowVoltage ? "zu niedrig" : "in Ordnung";
 
   } else if (var == "Z21_TRACKPOWERSTATE") {
-    return Z21::isTrackPowerOff ? "Aus" : "Ein";
+    return Z21::toString(Z21::getTrackPowerState());
 
   } else if (var == "Z21_EMERGENCYSTOP") {
-    return Z21::emergencyStop ? "Ein" : "Aus";
+    return Z21::getEmergencyStopState() == BoolState::On ? "Ein" : "Aus";
 
   } else if (var == "Z21_SHORTCUT") {
-    return Z21::shortCircuit ? "Ja" : "Nein";
+    return Z21::getShortCircuitState() == BoolState::On ? "Ja" : "Nein";
 
   } else if (var == "Z21_PROGMODE") {
-    return Z21::isProgStateOff ? "Inaktiv" : "Aktiv";
+    return Z21::getProgState() == BoolState::On ? "Aktiv" : "Inaktiv";
 
   } else if (var == "FLAG_VALIDITY_HINT") {
     return Z21::flagsValid ? "" : "(noch nicht ausgelesen)";
@@ -76,37 +76,37 @@ String htmlPageReplace(String var) {
     return Z21::flagsValid ? "block" : "none"; 
 
   } else if (var == "BCF_BASIC") {
-    return Z21::BCF_BASIC ? FlagYes : FlagNo;
+    return yesno("BCF_BASIC", Z21::BCF_BASIC);
 
   } else if (var == "BCF_RBUSFB") {
-    return Z21::BCF_RBUSFB ? FlagYes : FlagNo;
+    return yesno("BCF_RBUSFB", Z21::BCF_RBUSFB);
 
   } else if (var == "BCF_RC") {
-    return Z21::BCF_RC ? FlagYes : FlagNo;
+    return yesno("BCF_RC", Z21::BCF_RC);
 
   } else if (var == "BCF_SYS") {
-    return Z21::BCF_SYS ? FlagYes : FlagNo;
+    return yesno("BCF_SYS", Z21::BCF_SYS);
 
   } else if (var == "BCF_ALLLOCO") {
-    return Z21::BCF_ALLLOCO ? FlagYes : FlagNo;
+    return yesno("BCF_ALLLOCO", Z21::BCF_ALLLOCO);
 
   } else if (var == "BCF_ALLRC") {
-    return Z21::BCF_ALLRC ? FlagYes : FlagNo;
+    return yesno("BCF_ALLRC", Z21::BCF_ALLRC);
 
   } else if (var == "BCF_CANFB") {
-    return Z21::BCF_CANFB ? FlagYes : FlagNo;
+    return yesno("BCF_CANFB", Z21::BCF_CANFB);
 
   } else if (var == "BCF_LNMSG") {
-    return Z21::BCF_LNMSG ? FlagYes : FlagNo;
+    return yesno("BCF_LNMSG", Z21::BCF_LNMSG);
 
   } else if (var == "BCF_LNLOCO") {
-    return Z21::BCF_LNLOCO ? FlagYes : FlagNo;
+    return yesno("BCF_LNLOCO", Z21::BCF_LNLOCO);
 
   } else if (var == "BCF_LNSwitch") {
-    return Z21::BCF_LNSwitch ? FlagYes : FlagNo;
+    return yesno("BCF_LNSwitch", Z21::BCF_LNSwitch);
 
   } else if (var == "BCF_LNFB") {
-    return Z21::BCF_LNFB ? FlagYes : FlagNo;
+    return yesno("BCF_LNFB", Z21::BCF_LNFB);
   }
   
   return "";

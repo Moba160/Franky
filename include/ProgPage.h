@@ -24,6 +24,9 @@ class ProgPage: public Page, public Z21Observer {
     Numberbox* cvValue;
     Numberbox* pomAddress;
 
+    // LED-Ring musss gelöscht werden
+    bool clearRing = false;
+
 };
 
 #endif

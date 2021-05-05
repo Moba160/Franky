@@ -5,13 +5,14 @@
 <div class="w3-container">
 	<h2>Digitalsystem</h2>
 	<div class="w3-card-4">
+		<i>Die Daten werden (bis auf die Ströme) automatisch aktualisiert.</i>
 		<div class="w3-container w3-leftalign">
 			<ul class="w3-ul w3-hoverable">
-			<li>Gleisspannung		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_TRACKPOWERSTATE%</button></li>
-			<li>Kurzschluss			<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_SHORTCUT%</button></li>
-			<li>Nothalt				<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_EMERGENCYSTOP%</button></li>
-			<li>Programmiermodus	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_PROGMODE%</button></li>
-			<li>Strom Hauptgleis	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_CURRMAIN%</button></li>
+			<li>Gleisspannung		<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge" id="Z21_TRACKPOWERSTATE">%Z21_TRACKPOWERSTATE%</button></li>
+			<li>Kurzschluss			<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge" id="Z21_SHORTCUT">%Z21_SHORTCUT%</button></li>
+			<li>Nothalt				<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge" id="Z21_EMERGENCYSTOP">%Z21_EMERGENCYSTOP%</button></li>
+			<li>Programmiermodus	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge" id="Z21_PROGMODE">%Z21_PROGMODE%</button></li>
+			<li>Strom Hauptgleis	<button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge" id="Z21_CURRMAIN">%Z21_CURRMAIN%</button></li>
 			<li>Strom Programmiergleis <button class="w3-btn w3-blue-grey w3-small w3-round-xxlarge">%Z21_CURRPROG%</button></li>
 			</ul>
 		</div>
@@ -40,6 +41,7 @@
 	<h2>Broadcast-Flags</h2>
 	%FLAG_VALIDITY_HINT%
 	<div class="w3-card-4" style="display:%HIDE_FLAGS%">
+		<i>Die Daten werden nur durch Neuladen der Seite aktualisiert.</i>
 		<div class="w3-container w3-leftalign">
 			<ul class="w3-ul w3-hoverable">		
 			<li>%BCF_BASIC% LAN_X_BC_TRACK_POWER_OFF, LAN_X_BC_TRACK_POWER_ON, LAN_X_BC_PROGRAMMING_MODE, LAN_X_BC_TRACK_SHORT_CIRCUIT, 

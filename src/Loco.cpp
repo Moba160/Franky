@@ -1,6 +1,7 @@
 #include "Loco.h"
 #include "configuration.h"
 #include <Z21Types.h>
+#include "Page.h"
 
 Loco* Loco::loco[MAX_LOCOS];
 
@@ -158,8 +159,11 @@ void Loco::drive () {
       Z21::LAN_X_SET_LOCO_DRIVE(loco[l] -> addr, 
         loco[l] -> forward ? Forward : Backward, 
         loco[l] -> fst);
-      // Update Info Anzeige if (Interaction::shows(loco[l] -> addr)) Interaction::locoPage(false);
+
+      // Update Info Anzeige 
+      Page::currentPage() -> locoWasDriven(loco[l]->addr);
       // if (loco[l] -> fst == loco[l] -> targetFst) M5.Speaker.tone(200, 5);
+
       
     }
 

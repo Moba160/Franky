@@ -32,6 +32,8 @@ Funktion noch nicht fertig entwickelt ist, Fehler können auftreten.)
 	<div class="w3-container w3-leftalign">
 		<table class="w3-table-all w3-hoverable">
 			<thead><tr class="w3-blue-grey"><th>Version</th><th>Datum</th><th>&Auml;nderung</th></tr></thead>
+			<tr><td>1.2.2</td><td>25.04.2021</td><td>Adressen können über Schrittweiten schneller eingestellt werden. Funktionen können geschaltet werden. Rückruf: kein Bonjour-Service. Eingabe franky/ im Browser reicht.</td></tr>
+			<tr><td>1.2.1</td><td>25.04.2021</td><td>Kein "Zappeln" der Fahrstufen 1 und 2 mehr. Powerbutton-Verhalten geändert. Fehlerbehebung bei Stati wie Gleisspannung, Kurzschluss, Nothalt, Programmierstatus (Franky + Webseite), Bonjour-Service (MDNS) unterstützt</td></tr>
 			<tr><td>1.2.0</td><td>22.04.2021</td><td>Bedienseite Gleisbild wieder eingeführt, Fehler bei Gerds Gleisbox gefixt</td></tr>
 			<tr><td>1.1.1</td><td>20.04.2021</td><td>Unterscheidung Beta, Unterstützung Gerds Gleisbox</td></tr>
 			<tr><td>1.1.0</td><td>14.04.2021</td><td>Neue Bedienseite (Informationen über Netzwerk, Z21 und letzte Kommandos)</td></tr>
@@ -66,16 +68,22 @@ Funktion noch nicht fertig entwickelt ist, Fehler können auftreten.)
 			<thead><tr class="w3-blue-grey"><th>Verbesserungen</th></tr></thead>
 				<tr><td>Linker Rand auf Webseiten: Einr&uuml;cken, ebenso Rand oben</td></tr>
 				<tr><td>Webseite: Vereinheitlichung Layout: z.B. auf Z21-Seite Button-Style der Werte, anderswo nicht</td></tr>
-				<tr><td>&amp;uml;-Notation sparen -> ISO-Code der Seite setzen, dann vsl. auch in Z21-Trace Umlaute m&ouml;glich</td></tde></tr>
 		</table>
 					
 		<table class="w3-table-all w3-hoverable">
-			<thead><tr class="w3-blue-grey"><th>Known bugs</th></tr></thead>	
-			<tr><td>Webseite: Gleisspannungszustand falsch dargestellt (immer AUS), generell Flags dort noch unzuverl&auml;ssig</td></tr>		
+			<thead><tr class="w3-blue-grey"><th>Known bugs</th></tr></thead>
+			<tr><td>Schalten von F28 lässt die F-Taste kurz flackern, ihr Status wird nicht korrekt angezeigt. Ist nur bei F28 der Fall</td></tr>	
+			<tr><td>Automatischer Modus: Eine Lok mit Fahrstufe z.B. 10 wird übernommen. Dann handgeregelt. Dann in den automatischen Modus genommen. Dann Zielfahstufe geändert. Problem: Wenn jetzt zurück in den manuellen Modus gewechselt wird, beschleunigt Franky von 1 an statt von der zuletzt angesteuerten Fahrstufe</td></tr>
+			<tr><td>Manchmal wird beim Start nicht sofort der Zentralenstatus erkannt, vermutlich weil die allerersten  Befehle zu schnell für die Zentrale kommen (ggf. verzögern?). Jedoch nach Ablauf des Lebenszeichenzyklus ist das spätestens behoben (nach 20s)</td></tr>
+			<tr><td>Die WLAN-Verbindung klappt meist auf Anhieb. Wenn nicht, klappt sie auch während des Countdowns nicht mehr. Das an sich ist unschön. Abhilfe: einfach neu starten. Weiterhin: Franky landet dann im Bildschirm 1 der Erstverbindung statt mit rotem Balken oben trotzdem zu starten</td></tr>
 			<tr><td>Wenn About-Seite immer wieder neu geladen wird, sinkt Heapgr&ouml;&szlig;e; Testen, ob Memory Leak</td></tr>
-			<tr><td>Z21-Trace: "  [ 26ms LAN_X_STATUS_CHANGED )" mit unbalancierter schlie&szligender Klammer. Offenbar ist buf nicht initialisiert, Zeile 460</td></tr>
 			<tr><td>Fahren: Nach Adresswechsel hat neue - bisher unbenutzte Lok - die Daten der alten!!! Nicht immer reproduzierbar ...</td></tr>
 			<tr><td>Longpress RotaryButton manchmal mit scheinbar hinterhergeschobenem shortpress. Liegt nicht an M5Button, irgendwo dahinter. Prellt der Regler vielleicht doch?</td></tr>
+		</table>
+
+		<table class="w3-table-all w3-hoverable">
+			<thead><tr class="w3-blue-grey"><th>Workarounds</th></tr></thead>	
+			<tr><td>Bei Kurzschluss wird manchmal scheinbar nur die Kurzschlussmeldung, jedoch nicht auch die Gleisspannungs-Aus-Meldung von der Zentrale empfangen. Daher in Kurzschlussfällen intern auf Gleisspannung Aus setzen.</td></tr>
 		</table>
 
 	</div>

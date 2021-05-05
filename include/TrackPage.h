@@ -35,7 +35,6 @@ class TrackPage: public Page, public Z21Observer {
     int selectedRoute = 0;
     int routeGroup = 1;
     void drawTracks();
-    void buttons();
 
     Textbox* fstName;
     Textbox* progress;

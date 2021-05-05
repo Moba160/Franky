@@ -15,6 +15,7 @@
 
 #include <AsyncTCP.h>
 #include <AsyncElegantOTA.h>
+#include <ESPmDNS.h>
 
 #include "Pref.h"
 #include <Z21.h>
@@ -155,12 +156,16 @@ void Webserver::webconfig() {
       M5.lcd.drawString("Verbinde mit WLAN SSID", TFT_W / 2, TFT_H * 0.30, 2);
       M5.lcd.drawString(ssid, TFT_W / 2, TFT_H * 0.50, 4);
 
-      int connCount = 50; int pixels=30;
-      while (WiFi.status() != WL_CONNECTED && connCount > 0) {
+      int connCount = 50; int pixels=30; 
+      while (WiFi.waitForConnectResult() != WL_CONNECTED && connCount > 0) {
           M5.lcd.fillRect(0, TFT_H * 0.80 - pixels/2, TFT_W, pixels, TFT_BLUE);
           M5.lcd.drawString(String(connCount--), TFT_W / 2, TFT_H * 0.80, 4);
+          yield();
           delay(500);
       }
+
+      MDNS.begin((HOST_NAME + index).c_str());
+      // MDNS.addService("http", "tcp", 80); // wohl nur für OTA-Update
 
       Webserver::begin();
 
@@ -351,9 +356,9 @@ String Webserver::processor(const String& var) {
     long hs = ss / 3600;
     int h = hs % 24;
 
-    int ds = hs / 24;
+    // int ds = hs / 24;
 
-    sprintf(str, "%d %s %02d:%02d:%02d", ds, ds != 1 ? "Tage" : "Tag", h, m, s);
+    sprintf(str, "%d:%02d:%02d", h, m, s);
     return (String(str));
 
   } else if (var == "UPTIME") {
@@ -519,5 +524,5 @@ void Webserver::send(String s) {
 }
 
 void Webserver::send(String parameter, String value) {
-  send(parameter + " = " + value);
+  send(parameter + "=" + value);
 }

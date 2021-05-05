@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "Z21.h"
 
-#define PRODUCT_VERSION "1.2.0"
+#define PRODUCT_VERSION "1.2.2"
 #define PRODUCT_NAME "Franky"
 #define HOST_NAME "Franky" // z.B. für Netzwerk
 
@@ -29,7 +29,7 @@
 
 // Sonderzustände
 #define colorFocus TFT_YELLOW // wenn ein Widget auf Eingabe reagieren kann
-#define colorTakenOver TFT_BLUE // Lok wird fremdgesteuert
+
 // Während WLAN noch nicht verbunden ist
 #define colorFgInConnection TFT_WHITE
 #define colorBgInConnection TFT_BLUE
@@ -45,6 +45,7 @@
 #define colorValueOK TFT_GREEN // CV-Ergebnis ok
 #define colorValueNOK TFT_RED // CV-Ergebnis nicht erhalten
 
+
 // ----------------------------------------------------------------------------------------------------
 // Loksteuerung
 
@@ -52,6 +53,10 @@
 #define MAX_LOCOS 20 // in gleichzeitiger Steuerung mögliche Lokzahl
 // Zyklus, alle wieviel ms die Lokbeschleunigung ausgerechnet wird
 #define LOCO_CYCLE 250 
+
+#define COLOR_ACCELERATING TFT_DARKGREEN
+#define COLOR_DECELERATING TFT_RED
+#define COLOR_TAKENOVER TFT_BLUE
 
 // ----------------------------------------------------------------------------------------------------
 // Schalten

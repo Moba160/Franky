@@ -15,18 +15,22 @@ class Numberbox : public Widget {
         Widget* setMinValue() { value = minVal; setVisible(true); return this; }
         Widget* setMaxValue() { value = maxVal; setVisible(true); return this; }
         Widget* setValue(int value) { this->value = value; return this; }
-        int getValue() { return value; }
+        Widget* setVisible(bool visible, int color);
+        virtual void setIncrement(int incr) { this->incr = incr; }
 
-        void setValueColor(int color) { fgColor = color; }
+        int getValue() { return value; }
 
         virtual void buttonPressed(M5Btn::ButtonType button);
 
     private:
 
         int value, minVal, maxVal;
+        int incr = 1;
         int color = fgColor;
         String pattern;
         String blank = "";
+
+        void draw(bool visible);
 
 };
 

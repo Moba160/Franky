@@ -1,9 +1,5 @@
 #include "Widget.h"
 
-int Widget::fgColor = TFT_WHITE;
-int Widget::bgColor = TFT_BLACK;
-int Widget::focusColor = TFT_YELLOW;
-
 // ----------------------------------------------------------------------------------------------------
 //
 

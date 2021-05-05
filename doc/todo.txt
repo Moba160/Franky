@@ -1,0 +1,13 @@
+Beschleunigt initial von 1 statt von aktueller Fahrstufe aus!
+
+Löschen der Zielfahrstraße im manuellen Modus funktioniert nicht
+
+Optimierung: setVisible nur bearbeiten (redraw), wenn sich Wert geändert hatte, allerdings entfällt der "force"-Charakter
+
+Optimierung: Lebenszeichen unterbricht - kurz - das Lokfahren und sollte dann nicht gemacht werden (gibt leichte Ruckler)
+
+
+Es werden MEMORYLEAKS entstehen, so wie ich die Adressen in LocoPage immer wieder überbügle!!!!!!!!!!!!!!!!!!!!!!
+
+
+Progmodeverhalten: wo beenden: "// setProgStateOn(false);" suchen, das schaltet ja nicht, sondern setzt nur Flag

@@ -22,7 +22,7 @@ int Page::col;
 Page* Page::navigationGrid[PAGE_ROWS][PAGE_COLS];
 bool Page::blocked = false;
 
-int Page::oldFocusIndex, Page::newFocusIndex;
+// int Page::oldFocusIndex, Page::newFocusIndex;
 
 
 // ----------------------------------------------------------------------------------------------------
@@ -65,10 +65,11 @@ void Page::loop() {
 void Page::setVisible(bool visible, bool clearScreen) {
 
   this->visible = visible;
-  M5Btn::clearFunctions(); M5Btn::setFunction(M5Btn::B, FN_FOCUS);
+  // setFunction(M5Btn::B, FN_FOCUS);
   if (clearScreen) tft->fillScreen(bgColor);
   tft->setTextColor(fgColor, bgColor);
   for (int i=0; i<this->numWidgets; i++) this->widgets[i]->setVisible(visible);
+  if (visible) setButtons(LAYER0);
 
 }
 
@@ -77,18 +78,22 @@ void Page::setVisible(bool visible, bool clearScreen) {
 
 void Page::navigationHint() {
 
-  if (blocked) return;
+  if (blocked || !visible) return;
 
   //----------------- Diese Stati nicht mehr im Record, sondern in Notifikation, oder???? Ansonsten fehlen sie dort
 
   int color = colorAllConnected;
   if (WiFi.status() != WL_CONNECTED) color = colorWiFiDisconnected;
   else if (millis() - Z21::lastReceived > Z21_HEARTBEAT) color = colorDigiStationDisconnected;
-  else if (!Z21::isProgStateOff()) color = colorProgMode;
-  else if (Z21::isTrackPowerOff()) color = colorTrackPowerOff;
+  else if (Z21::getProgState() == BoolState::On) color = colorProgMode;
+  else if (Z21::getTrackPowerState() == BoolState::Off) color = colorTrackPowerOff;
 
   // Status: Balken oben
   tft->fillRect(0, 0, TFT_W, NAV_IND_WIDTH, color);
+
+  // Status: LED-RING
+  if (Z21::getTrackPowerState() == BoolState::Off) M5Btn::ledRing(255, 255, 0, 10);
+  else M5Btn::ledRing(0, 0, 0, 10);
 
   if (isBeta()) {
     tft->setTextColor(TFT_RED, bgColor);
@@ -151,7 +156,6 @@ bool Page::isNavigable(int navigation) {
   
 }
 
-
 // ----------------------------------------------------------------------------------------------------
 //
 
@@ -183,9 +187,12 @@ void Page::handlePageSwitchAndFocus(M5Btn::ButtonType button) {
   }
   
   // Fokuswechsel
-  if (button == M5Btn::B && M5Btn::getFunction(button) == FN_FOCUS) {
+  if (currentPage()->focussedWidget() != currentPage()->lastFocussed) {
+    currentPage()->focusChanged();
+  }
+  if (button == M5Btn::B /*&& getFunction(button) == FN_FOCUS*/) {
     
-    oldFocusIndex = -1; newFocusIndex = -1;
+    int oldFocusIndex = -1, newFocusIndex = -1;
 
     for (int i=0; i<currentPage()->numWidgets; i++) 
       if (currentPage()->widgets[i]->hasFocus()) { oldFocusIndex = i; break; }
@@ -213,10 +220,22 @@ void Page::handlePageSwitchAndFocus(M5Btn::ButtonType button) {
 // ----------------------------------------------------------------------------------------------------
 //
 
+void Page::setButtons(int layer) {
+  for (int i=0; i<numSoftkeys; i++) 
+    if (softkeys[i]->getLayer() != layer) softkeys[i]->setVisible(false);
+  for (int i=0; i<numSoftkeys; i++) 
+    if (softkeys[i]->getLayer() == layer) softkeys[i]->setVisible(true);
+}
+
+
+// ----------------------------------------------------------------------------------------------------
+//
+
 Widget* Page::focussedWidget() {
   for (int i=0; i<numWidgets; i++) {
     if (widgets[i]->hasFocus()) return widgets[i];
   }
+  return 0;
 }
 
 void buttonPressed(M5Btn::ButtonType btn) {
@@ -224,17 +243,63 @@ void buttonPressed(M5Btn::ButtonType btn) {
     Page::currentPage()->buttonPressed(btn);
 }
 
+String Page::getFunction(M5Btn::ButtonType button) {
+  for (int i=0; i<numSoftkeys; i++) {
+    if (softkeys[i]->getButton()==button && softkeys[i]->getLayer()==layer) {
+      // Serial.printf("Zu Button %d gehört in Layer %d Funktion %s\n", button, layer, (softkeys[i]->getCaption()).c_str());
+      return softkeys[i]->getCaption();
+    }
+  }
+  return "nicht gefunden";
+}
+
+Softkey* Page::getSoftkey(M5Btn::ButtonType button) {
+  for (int i=0; i<numSoftkeys; i++) {
+    if (softkeys[i]->getButton()==button && softkeys[i]->getLayer()==layer) {
+      return softkeys[i];
+    }
+  }
+  return 0;
+}
+
+Softkey* Page::getSoftkey(String caption) {
+  for (int i=0; i<numSoftkeys; i++) {
+    if (softkeys[i]->getCaption()==caption && softkeys[i]->getLayer()==layer) {
+      return softkeys[i];
+    }
+  }
+  return 0;
+}
+
+
+void Page::setFunction(M5Btn::ButtonType button, String caption) {
+  for (int i=0; i<numSoftkeys; i++) 
+    if (softkeys[i]->getButton()==button && softkeys[i]->getLayer()==layer) softkeys[i]->setCaption(caption);
+}
+
+
+
 // ----------------------------------------------------------------------------------------------------
 //
 
-void Page::trackPowerStateChanged(bool trackPowerOff) {
+void Page::trackPowerStateChanged(BoolState trackPowerState) {
   navigationHint();
-  Serial.printf("Hier sollte Webseitenupdate stehen %s\n", trackPowerOff ? "Aus" : "Ein");
-  Webserver::send("Z21_TRACKPOWERSTATE", trackPowerOff ? "Aus" : "Ein");
+  Webserver::send("Z21_TRACKPOWERSTATE", Z21::toString(Z21::getTrackPowerState()));
 }
 
-void Page::progModeStateChanged(bool progModeOff) {
+void Page::shortCircuitStateChanged(BoolState shortCircuitState) {
   navigationHint();
-};
+  Webserver::send("Z21_SHORTCUT", Z21::toString(Z21::getShortCircuitState(), "Ja", "Nein"));
+}
+
+void Page::emergencyStopStateChanged(BoolState emergencyStopState) {
+  navigationHint();
+  Webserver::send("Z21_EMERGENCYSTOP", Z21::toString(Z21::getEmergencyStopState()));  
+}
+
+void Page::progStateChanged(BoolState progState) {
+  navigationHint();
+  Webserver::send("Z21_PROGMODE", Z21::toString(Z21::getProgState(), "Aktiv", "Inaktiv"));  
+}
 
 

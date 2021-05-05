@@ -21,6 +21,8 @@ class Widget {
 
     virtual Widget* setVisible(bool visible) = 0;
 
+    virtual void setIncrement(int incr) {};
+
     void setSelected(boolean selected) { this->selected = selected; }
     bool isSelected() { return selected; }
 
@@ -41,7 +43,9 @@ class Widget {
 
     int textSize;
 
-    static int fgColor, bgColor, focusColor;
+    int fgColor = TFT_WHITE;
+    int bgColor = TFT_BLACK;
+    int focusColor = TFT_YELLOW;
 
     // Für Buttons, die Zustand repräsentieren
     bool selected = false;

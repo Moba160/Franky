@@ -9,7 +9,11 @@
 
 // Fokus (zwischen Widgets wechseln). Diese wird immer fest auf Taste B (kurz) gelegt und ist
 // nicht veränderlich
-#define FN_FOCUS "< v >"
+#define FN_FOCUS "< o >"
+
+// Gleisspannung ein/aus
+#define FN_TRACKPOWER_ON "Gleissp. ein"
+#define FN_TRACKPOWER_OFF "Gleissp. aus"
 
 // Spitzenbeleuchtung ein/aus (toggeln)
 #define FN_HEADLIGHTS "Licht"
@@ -18,8 +22,16 @@
 #define FN_CHANNELS_PLUS "Kanal+"
 #define FN_CHANNELS_MINUS "Kanal-"
 
+// Modi Fst direkt ändern oder beschleunigen/bremsen lassen
+#define FN_CHANGE_SPEED "Manuell"
+#define FN_CHANGE_TARGETSPEED "Automatisch"
+
 // Adresse ändern
 #define FN_CHANGE_ADDR "Adr"
+
+// Softkeyebenen umschalten auf LocoPage
+#define FN_DELTA_START "Delta >"
+#define FN_DELTA_END "< Delta"
 
 // CV Read
 #define FN_CVREAD "CV Read"

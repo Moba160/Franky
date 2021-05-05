@@ -6,6 +6,7 @@
 #include <Z21Observer.h>
 #include <M5Btn.h>
 #include "Widget.h"
+#include <Softkey.h>
 
 /*
   Abstrakte Basisklasse der GUI
@@ -18,6 +19,10 @@
 // wobei nicht zu besetzende Plätze im Array mit 0 gekennzeichnet werden
 #define PAGE_ROWS 2
 #define PAGE_COLS 3
+
+// Softkey-Ebenen
+#define LAYER0 0
+#define LAYER1 1
 
 // scheinbar verdreht
 #define TFT_W TFT_HEIGHT
@@ -44,9 +49,13 @@ class Page : public Z21Observer {
         static bool isBlocked() { return blocked; }
         static void loop();
 
-        virtual void trackPowerStateChanged(bool trackPowerOff) override;
-        virtual void progModeStateChanged(bool progModeOff) override;
-        virtual void progResult(ProgResult result, int value) override {};
+        virtual void trackPowerStateChanged(BoolState trackPowerState) override;
+        virtual void shortCircuitStateChanged(BoolState shortCircuitState) override;
+        virtual void emergencyStopStateChanged(BoolState emergencyStopState) override;
+        virtual void progStateChanged(BoolState progState) override;
+        virtual void progResult(ProgResult result, int value) override {}
+
+        virtual void locoWasDriven(int addr) {}
 
         virtual void setVisible(bool visible, bool clearScreen); // müsste protected sein
         virtual void navigationHint();
@@ -54,8 +63,12 @@ class Page : public Z21Observer {
 
         static void handlePageSwitchAndFocus(M5Btn::ButtonType button);
         virtual void buttonPressed(M5Btn::ButtonType btn) {};
+        Softkey* getSoftkey(M5Btn::ButtonType button);
+        Softkey* getSoftkey(String caption);
+        String getFunction(M5Btn::ButtonType button);
+        void setFunction(M5Btn::ButtonType button, String caption);
 
-        virtual bool isBeta() { return false; }
+        virtual bool isBeta() = 0;
         
         static Page* currentPage() { return navigationGrid[row][col]; }
         Widget* focussedWidget();
@@ -66,10 +79,20 @@ class Page : public Z21Observer {
   protected:
 
     virtual void focusChanged() {};
+    Widget* lastFocussed = 0;
 
     static TFT_eSPI* tft;
     boolean visible = false;
     static bool blocked;
+
+    int numSoftkeys=0;
+    Softkey* softkeys[(2+MaxFct/4)*NumHwButtons*2]; // erste Zahl: zwei Umschaltebenen, + Funktionsseiten zweite 2: Kurz- und Langdruck
+
+    // Buttons in Abhängigkeit vom Modus neu setzen, dabei ist <level> die Buttonebene (Umschalten wie eine Art Shift-Taste)
+    void setButtons(int level);
+
+    // Aktive Ebene für Softkeys
+    int layer = LAYER0;
 
     // benachbarte Seiten
     static Page* navigationGrid[PAGE_ROWS][PAGE_COLS];
@@ -79,8 +102,7 @@ class Page : public Z21Observer {
     int numWidgets = 0;
     Widget* widgets[MaxWidgets];
 
-    static int oldFocusIndex, newFocusIndex;
-
+    // static int oldFocusIndex, newFocusIndex;
 
   private:
   

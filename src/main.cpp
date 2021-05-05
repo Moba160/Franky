@@ -6,6 +6,8 @@
 #include <M5Btn.h>
 #include <Pref.h>
 #include "Route.h"
+#include "Loco.h"
+#include "LocoPage.h"
 #include <configuration.h>
 
 // ----------------------------------------------------------------------------------------------------
@@ -36,9 +38,17 @@ void setup() {
   // M5Stack
   M5.begin(true, false, true, false);
   M5.Speaker.begin(); // ohne: Pfeifton
-  M5.Power.begin();
   Serial.begin(115200);
   Wire.begin(); // für Drehregler
+
+  M5.Power.begin();
+  if (!M5.Power.canControl()) {
+    Serial.println("M5.Power.canControl() == false");
+  }
+  M5.Power.setPowerBoostSet(true); // Ein-/Aus nur mit einfachem kurzen Druck
+  // M5.Power.setPowerBoostOnOff(bool); // zweimal drücken oder lang drücken, macht nur Sinn nach setPoweBoostSet(false)
+  M5.Power.setPowerVin(false); // Abziehen von USB schaltet aus (true: power up again)
+  //M5.Power.setAutoBootOnLoad(false); // Nicht beim Einstecken USB hochstarten, dann aber jedes zweite Einschalten erfolglos !?!?
 
   // Filesystem
   SPIFFS.begin();
@@ -70,6 +80,7 @@ void setup() {
 
 bool UDPServerInitialised = false;
 long lastHeartbeatSent = -Z21_HEARTBEAT; // gleich anfangs Heartbeat erzwingen
+long lastDriven = 0;
 
 void loop() {
 
@@ -86,8 +97,15 @@ void loop() {
     if (millis() - lastHeartbeatSent > Z21_HEARTBEAT) {
       Z21::heartbeat();
       lastHeartbeatSent = millis();
+      Z21::LAN_X_GET_LOCO_INFO(LocoPage::currentLoco()->addr);
     }
 
+  }
+
+  // Fahren
+  if (millis() - lastDriven > LOCO_CYCLE) {
+    Loco::drive();
+    lastDriven = millis();
   }
 
   // Notifikationen erhalten

@@ -10,10 +10,9 @@ class Loco {
 
   public:
 
-    static int currLoco;
     int addr = 3;
     int acc = 5;
-    int dec = 3;
+    int dec =5;
     int fst = 0;
     int targetFst = 0;
     float speed = fst;
