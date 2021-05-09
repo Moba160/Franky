@@ -1,3 +1,9 @@
+Initiales Setzen des Adressschritts auch visualisieren
+
+Aktivstatus mit blau/grau statt Rahmen
+1) besser sichtbar und besser für Funktionen
+2) löst Dilemma für Ist- oder Zielzustand bei Umschaltaktionen
+
 Beschleunigt initial von 1 statt von aktueller Fahrstufe aus!
 
 Löschen der Zielfahrstraße im manuellen Modus funktioniert nicht

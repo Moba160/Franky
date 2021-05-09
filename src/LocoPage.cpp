@@ -122,6 +122,7 @@ void LocoPage::setVisible(bool visible, bool clearScreen) {
     navigationHint();
     Z21::LAN_X_GET_LOCO_INFO(addr[channel]->getValue());
   }
+  setButtons(layer);
 }
 
 // ----------------------------------------------------------------------------------------------------

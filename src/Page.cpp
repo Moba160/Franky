@@ -190,7 +190,7 @@ void Page::handlePageSwitchAndFocus(M5Btn::ButtonType button) {
   if (currentPage()->focussedWidget() != currentPage()->lastFocussed) {
     currentPage()->focusChanged();
   }
-  if (button == M5Btn::B /*&& getFunction(button) == FN_FOCUS*/) {
+  if (button == M5Btn::B && currentPage()->getFunction(button) == FN_FOCUS) {
     
     int oldFocusIndex = -1, newFocusIndex = -1;
 
