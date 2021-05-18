@@ -53,6 +53,9 @@ void setup() {
   // Filesystem
   SPIFFS.begin();
 
+  // Lokdaten lesen - vorher muss SPIFFS.begin() ausgeführt worden sein
+  Loco::begin();
+
   // Webserver, und wenn nötig, Access Point für erstmalige Credentials-Eingabe
 
   // Kommentare entfernen, um für Testzwecke AP-Modus zu erzwingen:
@@ -97,7 +100,7 @@ void loop() {
     if (millis() - lastHeartbeatSent > Z21_HEARTBEAT) {
       Z21::heartbeat();
       lastHeartbeatSent = millis();
-      Z21::LAN_X_GET_LOCO_INFO(LocoPage::currentLoco()->addr);
+      Z21::LAN_X_GET_LOCO_INFO(LocoPage::currentLoco()->getAddr());
     }
 
   }

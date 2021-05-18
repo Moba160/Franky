@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "Z21.h"
 
-#define PRODUCT_VERSION "1.2.3"
+#define PRODUCT_VERSION "1.3.0"
 #define PRODUCT_NAME "Franky"
 #define HOST_NAME "Franky" // z.B. für Netzwerk
 
@@ -29,6 +29,7 @@
 
 // Sonderzustände
 #define colorFocus TFT_YELLOW // wenn ein Widget auf Eingabe reagieren kann
+#define colorLibMode TFT_BLUE // wenn im Bibliotheksmodus
 
 // Während WLAN noch nicht verbunden ist
 #define colorFgInConnection TFT_WHITE
@@ -50,9 +51,8 @@
 // Loksteuerung
 
 #define MAX_LOCO_CHANNELS 5 // maximale Lokkanäle (eigentlich eigentständige Seiten), muss ungerade sein
-#define MAX_LOCOS 20 // in gleichzeitiger Steuerung mögliche Lokzahl
-// Zyklus, alle wieviel ms die Lokbeschleunigung ausgerechnet wird
-#define LOCO_CYCLE 250 
+#define MAX_LOCOS 30 // in gleichzeitiger Steuerung mögliche Lokzahl
+#define LOCO_CYCLE 250 // Zyklus, alle wieviel ms die Lokbeschleunigung ausgerechnet wird
 
 #define COLOR_ACCELERATING TFT_DARKGREEN
 #define COLOR_DECELERATING TFT_RED
@@ -96,5 +96,8 @@
 #define prefNamePOUserKey "poUserKey"
 
 #define prefNameGerdOffs "GerdOffs"
+
+#define prefNameLocoLib "locoLib"
+#define prefNameDriveAutomatically "driveAutom" // nicht länger als 14 Zeichen. Noch nachschauen, warum
 
 #endif

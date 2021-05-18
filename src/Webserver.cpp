@@ -157,7 +157,8 @@ void Webserver::webconfig() {
       M5.lcd.drawString(ssid, TFT_W / 2, TFT_H * 0.50, 4);
 
       int connCount = 50; int pixels=30; 
-      while (WiFi.waitForConnectResult() != WL_CONNECTED && connCount > 0) {
+      // while (WiFi.waitForConnectResult() != WL_CONNECTED && connCount > 0) { // scheint dann nie Countdown auszulösen
+      while (WiFi.status() != WL_CONNECTED && connCount > 0) {
           M5.lcd.fillRect(0, TFT_H * 0.80 - pixels/2, TFT_W, pixels, TFT_BLUE);
           M5.lcd.drawString(String(connCount--), TFT_W / 2, TFT_H * 0.80, 4);
           yield();

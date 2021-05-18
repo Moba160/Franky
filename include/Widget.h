@@ -27,6 +27,7 @@ class Widget {
     bool isSelected() { return selected; }
 
     Widget* setFocus(bool focus) { this->focus = focus; return this; }
+    Widget* setFocusColor(int focusColor) { this->focusColor = focusColor; return this; }
     bool hasFocus() { return focus; }
     bool canHaveFocus() { return (style & NOAUTOFOCUS) == 0; }
 
@@ -40,6 +41,7 @@ class Widget {
     int alignment;
     int width, height;
     int style;
+    String blank = "";
 
     int textSize;
 

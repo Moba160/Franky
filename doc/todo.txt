@@ -1,10 +1,11 @@
-Initiales Setzen des Adressschritts auch visualisieren
 
-Aktivstatus mit blau/grau statt Rahmen
-1) besser sichtbar und besser für Funktionen
-2) löst Dilemma für Ist- oder Zielzustand bei Umschaltaktionen
+
+Initiales Setzen des Adressschritts auch visualisieren. AUch: Pfeil ab/auf sind überlagertem
+
 
 Beschleunigt initial von 1 statt von aktueller Fahrstufe aus!
+
+Bibliotheksmodus: überspringen von nicht enthaltenen Adressen klappt nicht ... (z.B: Adresse 21, 22)
 
 Löschen der Zielfahrstraße im manuellen Modus funktioniert nicht
 
@@ -13,7 +14,7 @@ Optimierung: setVisible nur bearbeiten (redraw), wenn sich Wert geändert hatte,
 Optimierung: Lebenszeichen unterbricht - kurz - das Lokfahren und sollte dann nicht gemacht werden (gibt leichte Ruckler)
 
 
-Es werden MEMORYLEAKS entstehen, so wie ich die Adressen in LocoPage immer wieder überbügle!!!!!!!!!!!!!!!!!!!!!!
+Nach Verbindungsproblemen: AP-Seite mit überlagertem "Automatisch"-Button
 
 
 Progmodeverhalten: wo beenden: "// setProgStateOn(false);" suchen, das schaltet ja nicht, sondern setzt nur Flag

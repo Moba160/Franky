@@ -13,10 +13,10 @@ TrackPage::TrackPage(char navigable) : Page(navigable) {
 
   #define y TFT_H*0.67
 
-  fstName = new Textbox(tft, 0, "", TFT_W/2, y, CC_DATUM, 4);
-  progress = new Textbox(tft, 0, "", TFT_W/2, TFT_H*0.75, CC_DATUM, 2);
-  leftSymbol = new Textbox(tft, 0, ">", 0, y, ML_DATUM, 4);
-  rightSymbol = new Textbox(tft, 0, ">", TFT_W, y, MR_DATUM, 4);
+  fstName = new Textbox(tft, 0, 40, "", TFT_W/2, y, CC_DATUM, 4);
+  progress = new Textbox(tft, 0, 60, "", TFT_W/2, TFT_H*0.75, CC_DATUM, 2);
+  leftSymbol = new Textbox(tft, 0, 5, ">", 0, y, ML_DATUM, 4);
+  rightSymbol = new Textbox(tft, 0, 5, ">", TFT_W, y, MR_DATUM, 4);
 
   
   

@@ -13,9 +13,12 @@ class Numberbox : public Widget {
 
         void increase(int delta);
         Widget* setMinValue() { value = minVal; setVisible(true); return this; }
+        Widget* setMinValue(int min) { minVal = min; return this; }
         Widget* setMaxValue() { value = maxVal; setVisible(true); return this; }
+        Widget* setMaxValue(int max) { maxVal = max; return this; }
         Widget* setValue(int value) { this->value = value; return this; }
         Widget* setVisible(bool visible, int color);
+        int getMinValue() { return minVal; }
         virtual void setIncrement(int incr) { this->incr = incr; }
 
         int getValue() { return value; }
@@ -28,7 +31,6 @@ class Numberbox : public Widget {
         int incr = 1;
         int color = fgColor;
         String pattern;
-        String blank = "";
 
         void draw(bool visible);
 

@@ -2,7 +2,7 @@
 
 <div class="w3-panel w3-gray"><h1>Einstellungen</h1></div> 
 
-<p>%BTN_Speichern%  %BTN_Reset%  %BTN_Reboot%</p>
+<p>%BTN_Speichern%  %BTN_Reboot% %BTN_Reset% (löscht alle Konfigurationswerte ohne Nachfrage!) </p>
 
 <div class="w3-container">
 
@@ -25,7 +25,17 @@
 		<div class="w3-container w3-leftalign">
 			<ul class="w3-ul w3-hoverable">
 			<li>Z21-Adresse: %PREF_text:15:15_z21IPAddr% mit Port %Z21_PORT%</li>
-			<li>"Gerd-Offset": %PREF_checkbox:1:1_GerdOffs% (Wenn <a href="https://www.stummiforum.de/viewtopic.php?f=7&t=160368&p=2201757&hilit=0x007f#p2201757">Gerds Gleisbox</a> verwendet wird, addiert Franky 0x2000 zur Adresse - erfordert Neustart.)</li>
+			<li>%PREF_checkbox:1:1_GerdOffs% "Gerd-Offset" (Wenn <a href="https://www.stummiforum.de/viewtopic.php?f=7&t=160368&p=2201757&hilit=0x007f#p2201757">Gerds Gleisbox</a> verwendet wird, addiert Franky 0x2000 zur Adresse - erfordert Neustart.)</li>
+			</ul>
+		</div>
+	</div>
+
+	<h2>Verhalten</h2>
+	<div class="w3-card-4">
+		<div class="w3-container w3-leftalign">
+			<ul class="w3-ul w3-hoverable">
+			<li>%PREF_checkbox:1:1_locoLib% Im Bibliotheksmodus starten (Nur aus Lokdatei gelesene Loks sind steuerbar, dazu muss diese Datei existieren. Erfordert Neustart.)</li>
+			<li>%PREF_checkbox:1:1_driveAutom% Im automatischen Fahrmodus starten (Franky bremst/beschleunigt selbst. Erfordert Neustart.)</li>
 			</ul>
 		</div>
 	</div>

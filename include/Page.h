@@ -86,7 +86,8 @@ class Page : public Z21Observer {
     static bool blocked;
 
     int numSoftkeys=0;
-    Softkey* softkeys[(2+MaxFct/4)*NumHwButtons*2]; // erste Zahl: zwei Umschaltebenen, + Funktionsseiten zweite 2: Kurz- und Langdruck
+    #define MAX_SOFT_KEYS (NumHwButtons*2*2 + MaxFct/4*NumHwButtons*2) // erster Teil: zwei Bedienebenen mit je 2*3 Softkeys. Zweiter Teil: Funktionen erfordern jede eine Softkey plus Navigationstasten
+    Softkey* softkeys[MAX_SOFT_KEYS]; 
 
     // Buttons in Abhängigkeit vom Modus neu setzen, dabei ist <level> die Buttonebene (Umschalten wie eine Art Shift-Taste)
     void setButtons(int level);
@@ -101,8 +102,6 @@ class Page : public Z21Observer {
 
     int numWidgets = 0;
     Widget* widgets[MaxWidgets];
-
-    // static int oldFocusIndex, newFocusIndex;
 
   private:
   

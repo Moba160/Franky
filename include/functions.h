@@ -22,9 +22,8 @@
 #define FN_CHANNELS_PLUS "Kanal+"
 #define FN_CHANNELS_MINUS "Kanal-"
 
-// Modi Fst direkt ändern oder beschleunigen/bremsen lassen
-#define FN_CHANGE_SPEED "Manuell"
-#define FN_CHANGE_TARGETSPEED "Automatisch"
+// Automatisch/manuell fahren umschalten
+#define FN_DRIVE_AUTO "Automatisch"
 
 // Adresse ändern
 #define FN_CHANGE_ADDR "Adresse"

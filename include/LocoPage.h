@@ -30,9 +30,6 @@ class LocoPage: public Page, public Z21Observer {
 
   private:
 
-    // Fahrmodus. true: manuell fahren, false: automatisch bremsen/beschleunigen
-    bool driveManually = true;
-
     // Lok ansteuern gemäß angeforderter Werte
     void driveLoco();
 
@@ -42,12 +39,26 @@ class LocoPage: public Page, public Z21Observer {
     // Gewählter Lokkanal hat sich geändert
     void locoChannelChanged(int oldChannel, int channel);
 
+    // Adresse wurde geändert
+    void locoAddressChanged();
+
+    // Min- und Maxwerte für Lokadresse (in Abhängigkeit vom durch selectKnownAddresses bestimmten Modus) setzen
+    void setMinMaxAddr();
+
     // Im Adressmodus?
     bool inAddressChangeMode = false;
     // void handleDeltaButton();
 
-    // Anzahl Layeer
-    int numLayers = 2 + MaxFct/4;
+    // Nur bekannte Loks wählen ("Bibliotheksmodus")?
+    static bool libMode;
+
+    // Anzahl Layer
+    int numLayers;
+
+
+
+    // Mit jeder Lok und deren unterschiedlicher Funktionszahl betr. Softkeys neu setzen
+    void setFunctionSoftkeys();
 
     // Gespeicherte Loks je Lokkanal
     Loco* loco[MAX_LOCO_CHANNELS];
@@ -60,10 +71,21 @@ class LocoPage: public Page, public Z21Observer {
 
     // Widgets für Bedienung
     Numberbox* addr[MAX_LOCO_CHANNELS]; 
+    Textbox* locoInfo;
     Symbolbox* direction;
     Symbolbox* headlights;
     Numberbox* speed;
     Numberbox* targetSpeed;
+
+    // Modi
+    bool driveManually = false; // Fahrmodus. true: manuell fahren, false: automatisch bremsen/beschleunigen
+    bool inLibMode = false; // Librarymodus
+
+    // Bestimmte Softkeys, auf die gesondert zugegriffen wird
+    int firstFunctionSoftkeyIndex; // Softkeyindex der ersten Funktionstaste 
+    Softkey* addrStepsSoftKey; // Softkey, mit der Adressschrittweiten ausgewählt werden kann. Wird nur angezeigt, wenn selectKnownAddresses = false
+    Softkey* drivingModeSoftkey; // manuell/automatisch
+    Softkey* libModeSoftkey; // Bibliotheksmodus 
 
     void dump(char* message);
 

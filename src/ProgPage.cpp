@@ -33,7 +33,7 @@ void ProgPage::setVisible(bool visible, bool clearScreen) {
   softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_POMWRITE, M5Btn::CC, 0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
   
   setButtons(0);
-  pomAddress->setValue(LocoPage::currentLoco()->addr)->setVisible(visible);
+  pomAddress->setValue(LocoPage::currentLoco()->getAddr())->setVisible(visible);
 
   if (visible) navigationHint();
   
@@ -80,7 +80,7 @@ void ProgPage::buttonPressed(M5Btn::ButtonType button) {
 
   } else if (getFunction(button) == FN_POMWRITE) {
     M5Btn::ledRing(200, 200, 200,  20); clearRing = true;
-    Z21::LAN_X_CV_POM_WRITE_BYTE(LocoPage::currentLoco()->addr, cvAddress->getValue(), cvValue->getValue());
+    Z21::LAN_X_CV_POM_WRITE_BYTE(LocoPage::currentLoco()->getAddr(), cvAddress->getValue(), cvValue->getValue());
   } 
 
 }
