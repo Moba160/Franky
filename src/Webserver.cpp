@@ -159,7 +159,7 @@ void Webserver::webconfig() {
       M5.lcd.setTextDatum(CC_DATUM);
       M5.lcd.drawString(String(PRODUCT_NAME) + " " + PRODUCT_VERSION, TFT_W / 2, TFT_H * 0.15, 4);
       M5.lcd.drawString("Verbinde mit WLAN SSID(s)", TFT_W / 2, TFT_H * 0.30, 2);
-      M5.lcd.drawString(ssid + (ssid2 == "" ? "" : " oder "), TFT_W / 2, TFT_H * 0.50, 4);
+      M5.lcd.drawString(ssid + (ssid2 == "" ? "" : " oder "), TFT_W / 2, TFT_H * 0.50, 4); 
       if (ssid2 != "") M5.lcd.drawString(ssid2, TFT_W / 2, TFT_H * 0.60, 4);
 
 
