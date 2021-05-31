@@ -1,0 +1,24 @@
+%MENU%
+
+<div class="w3-panel w3-gray"><h1>Lokbibliothek</h1></div>
+
+<div class="w3-container">
+    Die Lokdaten werden aus der Datei <a href=locoData.csv>locoData.csv</a> gelesen. In der Tabelle unten wird gespiegelt, welche
+    der Daten tatsächlich verwendet werden. Bspw. werden fehlerhafte Daten überlesen. Durch Vergleich
+    der Datei (Link oben) und der Tabelle unten kann u.U. festgestellt werden, wo eine unerwartete Differenz ist.
+	<p/>
+	Es können max. %MAX_LOCO_LIB_SIZE% Einträge sein (sind es mehr, werden sie ignoriert). Wenn noch freie Plätze vorhanden sind, werden Loks, die im manuellen Modus
+	gefahren werden und nicht in der Bibliothek vorgegeben sind, hinzugefügt. Jedoch nur, solang freie Plätze vorhanden sind. Danach wird jede neue Lok an Stelle 0 gespeichert, die
+	so zuletzt aufgerufene Lok überschreibt also eine vorher dort gespeicherte Lok.
+	<p/>
+    <div class="w3-card-4">
+		<div class="w3-responsive">
+			%LOCOLIB%
+		</div>
+	</div>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -17,6 +17,7 @@ class Loco {
 
     String name = ""; // Betriebsnummer
     String decoder = "";
+    String fctSpec = "";
 
     boolean forward = true;
     boolean takenOver = false;
@@ -28,6 +29,9 @@ class Loco {
     Locofunction* getFctByName(String shortName);
     int getNumFct() { return numFct; }
     void setNumFct(int numFct) { this->numFct = numFct; }
+
+    int getAcc() { return acc; }
+    int getDec() { return dec; }
 
     static Loco* loco[MAX_LOCOS];
 

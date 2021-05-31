@@ -18,12 +18,15 @@ class InfoPage: public Page, public Z21Observer {
     virtual void buttonPressed(M5Btn::ButtonType btn) override;
 
     virtual void trackPowerStateChanged(BoolState trackPowerState) override;
+
     virtual void traceEvent(FromToZ21 direction, long diffLastSentReceived, String message, String parameters) override;
+
 
 
   private:
 
     String lastMessage="", lastParameters="";
+    Softkey* trackPowerSoftKey;
 
     void update(String message, String parameters);
 

@@ -221,6 +221,7 @@ void Page::handlePageSwitchAndFocus(M5Btn::ButtonType button) {
 //
 
 void Page::setButtons(int layer) {
+  this->layer = layer;
   for (int i=0; i<numSoftkeys; i++) 
     if (softkeys[i]->getLayer() != layer) softkeys[i]->setVisible(false);
   for (int i=0; i<numSoftkeys; i++) 
@@ -300,6 +301,12 @@ void Page::emergencyStopStateChanged(BoolState emergencyStopState) {
 void Page::progStateChanged(BoolState progState) {
   navigationHint();
   Webserver::send("Z21_PROGMODE", Z21::toString(Z21::getProgState(), "Aktiv", "Inaktiv"));  
+}
+
+
+
+void Page::traceEvent(FromToZ21 direction, long diffLastSentReceived, String message, String parameters) {
+  Webserver::send(String(direction == toZ21 ? "&nbsp;&nbsp;&gt;" : "&lt;") + "|" + "timeDiff" + "|" + message + "|" + parameters);
 }
 
 

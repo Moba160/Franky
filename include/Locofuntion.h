@@ -3,10 +3,12 @@
 
 #include <Arduino.h>
 
+#define SHORT_NAME_LEN 10
+
 class Locofunction {
     public:
 
-        Locofunction(int index, int mappedTo, String shortName, String longName);
+        Locofunction(int index, int mappedTo, char* shortName, char* longName);
 
         int getIndex() { return index; }
         int getMappedTo() { return mappedTo; }
@@ -16,17 +18,17 @@ class Locofunction {
         void setActive(bool active) { this->active = active; }
 
         String getShortName() { return shortName; }
-        void setShortName(String shortName) { this->shortName = shortName; }
-        String getLongName() { return longName; }
-        void setLongName(String longName) { this->longName = longName; }
+        void setShortName(const char* shortName);
+        // String getLongName() { return longName; }
+        // void setLongName(String longName) { this->longName = longName; }
 
         void dump();
 
     private:
 
-        int index, mappedTo;
-        String shortName;
-        String longName;
+        byte index, mappedTo;
+        char shortName[SHORT_NAME_LEN]; // char[] statt String wegen Speicherbedarf, gerade bei vielen Loks x viele Funktionen!
+        // String longName;
         bool active = false;
 
 };

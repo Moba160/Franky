@@ -2,6 +2,7 @@
 #include <Z21.h>
 #include "configuration.h"
 #include "Pref.h"
+#include "Loco.h"
 
 // ----------------------------------------------------------------------------------------------------
 // Webserver.cpp ist allgemein geschrieben. Die Franky-Spezifik findet hier statt
@@ -107,6 +108,39 @@ String htmlPageReplace(String var) {
 
   } else if (var == "BCF_LNFB") {
     return yesno("BCF_LNFB", Z21::BCF_LNFB);
+
+  } else if (var == "LOCOLIB") {
+    String result = 
+    "<table class=\"w3-table-all w3-hoverable\">"
+    "<thead><tr class=\"w3-teal\">"
+    "<th class=\"w3-right-align\">Index</th>"
+    "<th class=\"w3-right-align\">Adresse</th>"
+    "<th>Bezeichnung</th>"
+    "<th>Decoder</th>"
+    "<th class=\"w3-right-align\">Beschleunigungsrate</th>"
+    "<th class=\"w3-right-align\">Bremsrate</th>"
+    "<th class=\"w3-right-align\">höchste belegte Funktionsnummer</th>"
+    "<th>Funktionsdefinitionen</th>"
+    "</tr></thead>";
+    for (int i=0; i<MAX_LOCOS; i++) {
+      if (Loco::loco[i] != 0) {
+        result += "<tr>"
+        "<td>" + String(i) + "</td>"
+        "<td>" + String(Loco::loco[i]->getAddr()) + "</td>"
+        "<td>" + String(Loco::loco[i]->name) + "</td>"
+        "<td>" + String(Loco::loco[i]->decoder) + "</td>"
+        "<td>" + String(Loco::loco[i]->getAcc()) + "</td>"
+        "<td>" + String(Loco::loco[i]->getDec()) + "</td>"
+        "<td>" + String(Loco::loco[i]->getNumFct()) + "</td>"
+        "<td>" + Loco::loco[i]->fctSpec + "</td>"
+        "</tr>";
+      }
+    }
+    result += "</table>";
+    return result;
+  
+  } else if (var == "MAX_LOCO_LIB_SIZE") {
+    return String(MAX_LOCOS);
   }
   
   return "";

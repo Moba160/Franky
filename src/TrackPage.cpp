@@ -13,26 +13,28 @@ TrackPage::TrackPage(char navigable) : Page(navigable) {
 
   #define y TFT_H*0.67
 
+  // Widgets
+
   fstName = new Textbox(tft, 0, 40, "", TFT_W/2, y, CC_DATUM, 4);
   progress = new Textbox(tft, 0, 60, "", TFT_W/2, TFT_H*0.75, CC_DATUM, 2);
   leftSymbol = new Textbox(tft, 0, 5, ">", 0, y, ML_DATUM, 4);
   rightSymbol = new Textbox(tft, 0, 5, ">", TFT_W, y, MR_DATUM, 4);
 
-  
-  
-  // if (routeGroup == 1) {
-  //   M5Btn::setFunction(M5Btn::A, FN_EINF_HL);
-  //   M5Btn::setFunction(M5Btn::AA, FN_AUSF_HL);
-  //   M5Btn::setFunction(M5Btn::B, FN_DURCHF);
-  //   M5Btn::setFunction(M5Btn::BB, FN_FILT2);
-  //   M5Btn::setFunction(M5Btn::C, FN_EINF_AHB);
-  //   M5Btn::setFunction(M5Btn::CC, FN_AUSF_AHB); 
-  // } else {
-  //   M5Btn::setFunction(M5Btn::A, FN_SH_BOT);
-  //   M5Btn::setFunction(M5Btn::AA, FN_SH_TOP);
-  //   M5Btn::setFunction(M5Btn::B, FN_FILT1);
-  //   M5Btn::setFunction(M5Btn::C, FN_SH_Q);
-  // }
+  // Softkeys Ebene 0
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_EINF_HL, M5Btn::A, LAYER0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_AUSF_HL, M5Btn::AA, LAYER0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_DURCHF, M5Btn::B, LAYER0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, CAPTION_UP, M5Btn::BB, LAYER0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_EINF_AHB, M5Btn::C, LAYER0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_AUSF_AHB, M5Btn::CC, LAYER0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+
+  // softkeys Ebene 1
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_SH_BOT, M5Btn::A, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_SH_TOP, M5Btn::AA, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, CAPTION_DOWN, M5Btn::B, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_SH_Q, M5Btn::C, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_SH_S, M5Btn::CC, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+
 }
 
 
@@ -40,7 +42,7 @@ void TrackPage::setVisible(bool visible, bool clearScreen) {
   
   Page::setVisible(visible, clearScreen);
 
-  setButtons(1);
+  setButtons(LAYER0);
 
   fstName->setVisible(visible);
   progress->setVisible(visible);
@@ -49,9 +51,9 @@ void TrackPage::setVisible(bool visible, bool clearScreen) {
 
   if (visible) {
     matchFirstRoute();
+    navigationHint();
   }
 
-  if (visible) navigationHint();
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -105,6 +107,7 @@ void TrackPage::buttonPressed(M5Btn::ButtonType button) {
     
     if (button == M5Btn::RotaryLeft) selectedRoute--;
     if (button == M5Btn::RotaryRight) selectedRoute++;
+    selectedRoute = (selectedRoute + Route::getNumRoutes()) % Route::getNumRoutes();
 
     // "Weiterdrehen", bis passende Fst gefunden. Die bereits ermittelte nächste muss ja nicht passen
     while (!Route::usability(selectedRoute, routeFilter)) {
@@ -117,8 +120,6 @@ void TrackPage::buttonPressed(M5Btn::ButtonType button) {
 
   } else if (button == M5Btn::RotaryKnob) {
     Route::getById(selectedRoute)->set(tft, progress);
-    fstName->setValue("Stelle " + Route::getById(selectedRoute)->name + "...");
-
   } else if (getFunction(button) == FN_DURCHF) {
     routeFilter = RT_THROUGH; matchFirstRoute();
 
@@ -134,13 +135,11 @@ void TrackPage::buttonPressed(M5Btn::ButtonType button) {
   } else if (getFunction(button) == FN_AUSF_AHB) {
     routeFilter = RT_ARIGHT; matchFirstRoute();
 
-  } else if (getFunction(button) == FN_FILT1) {
-    routeGroup = 1;
-    setButtons(0);
+  } else if (getFunction(button) == CAPTION_UP) {
+    setButtons(LAYER1);
 
-  } else if (getFunction(button) == FN_FILT2) {
-    routeGroup = 2;
-    setButtons(1);
+  } else if (getFunction(button) == CAPTION_DOWN) {
+    setButtons(LAYER0);
 
   } else if (getFunction(button) == FN_SH_TOP) {
     routeFilter = RT_SH_TOP; matchFirstRoute();

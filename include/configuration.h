@@ -51,7 +51,7 @@
 // Loksteuerung
 
 #define MAX_LOCO_CHANNELS 5 // maximale Lokkanäle (eigentlich eigentständige Seiten), muss ungerade sein
-#define MAX_LOCOS 30 // in gleichzeitiger Steuerung mögliche Lokzahl
+#define MAX_LOCOS 100 // in gleichzeitiger Steuerung mögliche Lokzahl. Erhöhung nur mit Bedacht, kleiner 67000 Heapgröße bringt Abstürze!
 #define LOCO_CYCLE 250 // Zyklus, alle wieviel ms die Lokbeschleunigung ausgerechnet wird
 
 #define COLOR_ACCELERATING TFT_DARKGREEN
@@ -87,6 +87,8 @@
 
 #define prefNameSSID "ssid"
 #define prefNamePasswd "passwd"
+#define prefNameSSID2 "ssid2"
+#define prefNamePasswd2 "passwd2"
 
 #define prefNameFrankyIndex "frankyIndex"
 

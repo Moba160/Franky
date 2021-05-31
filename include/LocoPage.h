@@ -55,7 +55,8 @@ class LocoPage: public Page, public Z21Observer {
     // Anzahl Layer
     int numLayers;
 
-
+    // Besonderheit der Taste handeln
+    void handleAddrStepKey();
 
     // Mit jeder Lok und deren unterschiedlicher Funktionszahl betr. Softkeys neu setzen
     void setFunctionSoftkeys();
@@ -86,6 +87,7 @@ class LocoPage: public Page, public Z21Observer {
     Softkey* addrStepsSoftKey; // Softkey, mit der Adressschrittweiten ausgewählt werden kann. Wird nur angezeigt, wenn selectKnownAddresses = false
     Softkey* drivingModeSoftkey; // manuell/automatisch
     Softkey* libModeSoftkey; // Bibliotheksmodus 
+    int firstDeltaKey, lastDeltaKey; // Index erste und letzte Softkey für Adressdeltaänderung
 
     void dump(char* message);
 

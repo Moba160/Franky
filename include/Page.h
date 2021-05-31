@@ -54,6 +54,7 @@ class Page : public Z21Observer {
         virtual void emergencyStopStateChanged(BoolState emergencyStopState) override;
         virtual void progStateChanged(BoolState progState) override;
         virtual void progResult(ProgResult result, int value) override {}
+        virtual void traceEvent(FromToZ21 direction, long diffLastSentReceived, String message, String parameters) override;
 
         virtual void locoWasDriven(int addr) {}
 

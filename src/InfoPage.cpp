@@ -14,7 +14,8 @@
 InfoPage::InfoPage(char navigable) : Page(navigable) {
   Z21::addObserver(static_cast<Page*>(this));
 
-  softkeys[numSoftkeys++] = new Softkey(tft, 0, Z21::getTrackPowerState() == BoolState::On ? FN_TRACKPOWER_OFF : FN_TRACKPOWER_ON, M5Btn::B, 0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  (softkeys[numSoftkeys++] = trackPowerSoftKey = new Softkey(tft, 0, FN_TRACKPOWER, M5Btn::B, 0, TFT_WHITE, TFT_BLUE, TFT_BLACK))
+    ->setActivated(Z21::getTrackPowerState() == BoolState::On);
 
 }
 
@@ -50,13 +51,14 @@ void InfoPage::setVisible(bool visible, bool clearScreen) {
 
 void InfoPage::buttonPressed(M5Btn::ButtonType button) {
   if (!visible) return;
-  if (getFunction(button) == FN_TRACKPOWER_OFF) {
-    Z21::LAN_X_SET_TRACK_POWER(false);
 
-  } else if (getFunction(button) == FN_TRACKPOWER_ON) {
-    Z21::LAN_X_SET_TRACK_POWER(true);
+  bool on = Z21::getTrackPowerState() == BoolState::On;
+  on = !on;
 
-  }
+  trackPowerSoftKey->setActivated(on)->setVisible(true);
+  tft->setTextColor(fgColor, bgColor);
+
+  Z21::LAN_X_SET_TRACK_POWER(on);
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -70,8 +72,7 @@ void InfoPage::update(String message, String parameters) {
 
 void InfoPage::trackPowerStateChanged(BoolState trackPowerState) {
     if (!visible) return;
-    setFunction(M5Btn::B, trackPowerState == BoolState::On ? FN_TRACKPOWER_OFF : FN_TRACKPOWER_ON);
-    setButtons(LAYER0);
+    getSoftkey(FN_TRACKPOWER)->setActivated(trackPowerState == BoolState::On)->setVisible(true);
     navigationHint();
     tft->setTextColor(fgColor, bgColor);
 }
@@ -81,4 +82,5 @@ void InfoPage::traceEvent(FromToZ21 direction, long diffLastSentReceived, String
   lastParameters = parameters;
   if (visible) update(lastMessage, parameters);
 }
+
 

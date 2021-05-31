@@ -9,7 +9,7 @@
 #define BORDER_LEFT 8
 #define BORDER_RIGHT 8
 
-#define INITIAL_DELTA "100" // anfängliches Delta beim Adressschalten
+#define INITIAL_DELTA "10" // anfängliches Delta beim Adressschalten
 
 void LocoPage::dump(char* message) {
   Serial.printf("%s (%s)\n", message, driveManually ? "manuell" : "aut. bremsen/beschl");
@@ -65,6 +65,8 @@ LocoPage::LocoPage(char navigable) : Page(navigable) {
     widgets[numWidgets++] = addr[i] = new Numberbox(tft, NOAUTOFOCUS, "%d", 12, Pref::get(prefNameLocoChannelAddr + String(i), String(i+1)).toInt(), 1, MaxLocoAddr, TFT_W*(2*i+1)/10, BORDER_TOP, TC_DATUM, 4);
   }
 
+  for (int i=numSoftkeys; i<MAX_SOFT_KEYS; i++) softkeys[i] = 0;
+
   // Softkeys Ebene 0
   softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_HEADLIGHTS, M5Btn::A, LAYER0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
   softkeys[numSoftkeys++] = drivingModeSoftkey = new Softkey(tft, 0, FN_DRIVE_AUTO, M5Btn::B, LAYER0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
@@ -74,22 +76,21 @@ LocoPage::LocoPage(char navigable) : Page(navigable) {
   softkeys[numSoftkeys++] = new Softkey(tft, 0, FN_CHANNELS_MINUS, M5Btn::CC, LAYER0, TFT_WHITE, TFT_BLUE, TFT_BLACK);
 
   // Softkeys Ebene 1 - nur für Adressschritte
-  softkeys[numSoftkeys++] = new Softkey(tft, 0, "1", M5Btn::A, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
-  softkeys[numSoftkeys++] = new Softkey(tft, 0, "10", M5Btn::B, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
-  softkeys[numSoftkeys++] = new Softkey(tft, 0, INITIAL_DELTA, M5Btn::C, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[firstDeltaKey = numSoftkeys++] = new Softkey(tft, 0, "1", M5Btn::A, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  (softkeys[numSoftkeys++] = new Softkey(tft, 0, INITIAL_DELTA, M5Btn::B, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK))->setActivated(true);
+  softkeys[numSoftkeys++] = new Softkey(tft, 0, "100", M5Btn::C, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
   softkeys[numSoftkeys++] = new Softkey(tft, 0, CAPTION_DOWN, M5Btn::AA, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
   softkeys[numSoftkeys++] = new Softkey(tft, 0, "50", M5Btn::BB, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
-  softkeys[numSoftkeys++] = new Softkey(tft, 0, "500", M5Btn::CC, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
+  softkeys[lastDeltaKey = numSoftkeys++] = new Softkey(tft, 0, "500", M5Btn::CC, LAYER1, TFT_WHITE, TFT_BLUE, TFT_BLACK);
 
   firstFunctionSoftkeyIndex = numSoftkeys;
   setFunctionSoftkeys();
-
+  
   // Modi
   inLibMode = Pref::get(prefNameLocoLib, "off") == "on";
-  libModeSoftkey->setActivated(inLibMode)->setVisible(true);
+  libModeSoftkey->setActivated(inLibMode);
   driveManually = Pref::get(prefNameDriveAutomatically, "off") == "off";
-  drivingModeSoftkey->setActivated(!driveManually)->setVisible(true);
-
+  drivingModeSoftkey->setActivated(!driveManually);
   setMinMaxAddr();
   
   if (driveManually) {
@@ -143,8 +144,35 @@ void LocoPage::setFunctionSoftkeys() {
     }  
   }
   numLayers=l+1;
+  handleAddrStepKey();
+}
 
-  addrStepsSoftKey->setVisible(inAddressChangeMode || loco[channel]->getNumFct() != 0);
+// ----------------------------------------------------------------------------------------------------
+//
+
+void LocoPage::handleAddrStepKey() {
+  String oldCaption = addrStepsSoftKey->getCaption();
+  String newCaption;
+  
+  // In Ebene 0 keine Umsschaltfunktion zu weiteren F-Seiten nötig, wenn nur F0 benötigt werden
+  if (layer == LAYER0  && loco[channel]->getNumFct() == 0) {
+    newCaption = "";
+
+  // in Layer 1 nur Deltaschritte, von dort Zurückschalten abieten
+  } else if (layer == LAYER1) {
+    newCaption = CAPTION_DOWN;
+    
+  // Ansonsten Umschalttaste für weitere F-Seiten nötig  
+  } else {
+    newCaption = CAPTION_UP;
+  }
+
+  if (newCaption != oldCaption) {
+      addrStepsSoftKey->setVisible(false);
+      if (newCaption == "") return;
+      addrStepsSoftKey->setCaption(newCaption)->setVisible(true);
+  }
+
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -167,6 +195,7 @@ void LocoPage::setVisible(bool visible, bool clearScreen) {
     Z21::LAN_X_GET_LOCO_INFO(addr[channel]->getValue());
   }
   setButtons(layer);
+  addrStepsSoftKey->setVisible(inAddressChangeMode || loco[channel]->getNumFct() != 0);
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -276,7 +305,6 @@ void LocoPage::buttonPressed(M5Btn::ButtonType button) {
     setButtons(layer);
 
     if (inAddressChangeMode) {
-      getSoftkey(INITIAL_DELTA)->setActivated(true);
       for (int i=0; i<MAX_LOCO_CHANNELS; i++) addr[i]->setIncrement(String(INITIAL_DELTA).toInt());
     }
 
@@ -286,20 +314,21 @@ void LocoPage::buttonPressed(M5Btn::ButtonType button) {
     } else {
       for (int i=0; i<MAX_LOCO_CHANNELS; i++) addr[i]->setIncrement(1);
       layer = (layer - 1 + numLayers)  % numLayers;
+      handleAddrStepKey();
     }
     setButtons(layer);
 
   } else if (
       getFunction(button) == "1" || 
-      getFunction(button) == "10" ||
+      getFunction(button) == INITIAL_DELTA ||
       getFunction(button) == "50" ||
-      getFunction(button) == "INITIAL_DELTA" ||
+      getFunction(button) == "100" ||
       getFunction(button) == "500") {
 
     int incr = getFunction(button).toInt();
     for (int i=0; i<MAX_LOCO_CHANNELS; i++) addr[i]->setIncrement(incr);
-    for (int i=0; i<numSoftkeys; i++) {
-      if (softkeys[i]->isActivated()) softkeys[i]->setActivated(false)->setVisible(true);
+    for (int i=firstDeltaKey; i<=lastDeltaKey; i++) {
+      if (softkeys[i]->isActivated()) softkeys[i]->setActivated(false)->setVisible(true); // alte Deltas löschen
     }
     getSoftkey(button)->setActivated(true)->setVisible(true);  // hervorheben, dass nun dieses Delta gilt
     addr[channel]->increase(incr);
@@ -353,6 +382,13 @@ void LocoPage::buttonPressed(M5Btn::ButtonType button) {
       addr[channel]->setMaxValue();
     }    
     locoAddressChanged();
+
+  // Nur Zurückschalten vom Adressmodus -> alten driveManually-State berücksichtigen, nicht umschalten!
+  } else if (inAddressChangeMode && getFunction(button) == FN_DRIVE_AUTO) {
+    inAddressChangeMode = false;
+    focussedWidget()->setFocus(false)->setVisible(true);
+    if (driveManually) speed->setFocus(true)->setVisible(true);
+    else targetSpeed->setFocus(true)->setVisible(true);
 
   // Fahrmodus manuell -> automatisch
   } else if (getFunction(button) == FN_DRIVE_AUTO && driveManually) {

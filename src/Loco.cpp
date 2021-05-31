@@ -55,6 +55,10 @@ void Loco::begin() {
       continue;
     }
 
+    // line.trim();
+    // if (line == "") continue; // Leerzeilen überlesen
+    // if (line.charAt(0) == '#') continue; // Kommentarzeilen überlesen
+
     numLocos++;
 
     // Spalten
@@ -86,6 +90,7 @@ void Loco::begin() {
       // Lokfunktionsspezifikation (Funktionsmapping, Kurz-/Langname)
       if (numElems > idxFunc) { 
         if (elems[idxFunc] != "") {
+          loco->fctSpec = elems[idxFunc];
           int numF = split(elems[idxFunc], LIST_SEP, funcs); // funcs[] enthält Funktionsspecs wie z.B. 1=2=kurz/lang (F1 mappen auf F2, Kurzname kurz, Langname lang)
           for (int i=0; i<numF; i++) {
             int numSpec = split(funcs[i], FMAP_SEP, funcSpec); // funcSpec enthält eine Spec wie oben "wie z.B."
@@ -95,8 +100,8 @@ void Loco::begin() {
 
             // diese so ermittelte Funktionsspezifikation überschreibt nun die Standardspezifikation (siehe Konstruktor von Locofunction)
             loco->fct[fctIndex]->setMappedTo(mappedTo);
-            if (numN > 0) loco->fct[fctIndex]->setShortName(names[0]);
-            if (numN > 1) loco->fct[fctIndex]->setLongName(names[1]); else loco->fct[fctIndex]->setLongName(names[0]);
+            if (numN > 0) loco->fct[fctIndex]->setShortName(names[0].c_str());
+            // if (numN > 1) loco->fct[fctIndex]->setLongName(names[1]); else loco->fct[fctIndex]->setLongName(names[0]);
             // loco->fct[fctIndex]->dump();
           }
         }
@@ -182,8 +187,6 @@ void Loco::increaseAddress(int8_t delta) {
 // aus LOCO_FILE_NAME eingelesenen, bekannten Loks ja ab Index 1 stehen
 
 Loco* Loco::addLoco(int addr) {
-
-  if (addr==7) Serial.println("-----------------7-------------------");
   
   Loco* newLoco = existsLoco(addr);
   if (newLoco != 0) return newLoco;
@@ -234,8 +237,9 @@ void Loco::dumpLocos(bool all) {
 
 Loco* Loco::getLoco(int addr) {
   for (int i=0; i<MAX_LOCOS; i++) {
-    if (loco[i] -> addr == addr) return loco[i];
+    if (loco[i] != 0) if (loco[i] -> addr == addr) return loco[i];
   }
+  Serial.printf("======== Error: getLoco(%d) returns 0\n", addr);
   return 0;
 }
 

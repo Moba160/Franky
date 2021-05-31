@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="decoder.xsl"?>
+
+<Decoder Name="Tran DCX76" DCC="1" ResetCV="1" ResetValue="0">
+	<Group Name="Grunddaten">
+		<CV Name="Lokadresse" LongDescription="DCC kurze Adrersse (CV1): 1- 127 oder 1-99, je nach Digitalsystem&#xA;&#xA;DCC Lange Adresse (CV17 und 18): bis 9999&#xA;Die CV29 (Bit 5), zur Umschaltung zwischen langer und kurzer Adresse, wird  automatisch beim programmieren der Adresse angepasst." CV="1" DefaultValue="3" Min="1" Max="9999" Mode="DCCLongAddress"></CV>
+		<CV Name="Mindestanfahrspannung Vmin" LongDescription="Diese CV beschreibt die minimale Geschwindigkeit der Lok." CV="2" DefaultValue="2" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Anfahrverzögerung" LongDescription="Die Anfahrverzögerung bestimmt die Geschwindigkeitsänderung beim Beschleunigen. Ein hoher Wert bewirkt eine langsame Geschwindigkeitsänderung." CV="3" DefaultValue="4" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Bremsverzögerung" LongDescription="Die Bremsverzögerung bestimmt die Geschwindigkeitsänderung beim Bremsen. Ansonsten gleiches Verhalten wie CV3" CV="4" DefaultValue="4" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Maximalgeschwindigkeit Vmax" LongDescription="Diese legt die Geschwindigkeit, mit der die Lok maximal fährt, fest." CV="5" DefaultValue="255" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="mittlere Geschwindikeit Vmid" LongDescription="Diese CV legt die mittlere Geschwindigkeit, mit der die Lok fährt, fest. Hierdurch können Sie die Geschwindigkeitskennlinine beeinflussen, ohne eine eigene Kurve definieren zu müssen." CV="6" DefaultValue="0" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Versionsnummer" CV="7" LongDescription="Hier sehen Sie die Versionsnummer des Lokempfängers." DefaultValue="0" Min="0" Max="255" ReadOnly="1"></CV>
+		<CV Name="Herstellerkennung" LongDescription="Die Nummer in dieser CV informiert Sie, wer der Hersteller des Decoders ist. Jede Firma, die DCC-Decoder herstellt, hat eine eigene Nummer. Eine Liste mit den Herstellerkennungen finden Sie z.B. auf der Website der NMRA (www.nmra.org). Diese CV kann nur gelesen, nicht beschrieben werden. Wenn Sie alle CVs des Decoders auf Werkseinstellung zurücksetzen möchten, so schreiben Sie in die CV8 einen bestimmten Wert laut Herstellerdokumentation. Ihr System liest allerdings eventuell einen anderen oder keinen Wert zurück. Dadurch kommt es zu einer Fehlermeldung. Der Reset wurde aber dennoch ausgeführt." CV="8" DefaultValue="117" Min="0" Max="255" ReadOnly="1"></CV>
+		<CV Name="Analogmodus" LongDescription="Bit 0-7 schaltet Ausgang 1-8 ein, wenn DC versorgt wird." CV="13" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1 (Licht vorne)" Number="0"></Bit>
+			<Bit Name="Ausgang 2 (Licht hinten)" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Mehrfachtraktionsadresse" CV="19" DefaultValue="0" Min="0" Max="127" LongDescription="Mehrfachtraktionsadresse:&#xA;&#xA;In diese CV wird die Mehrfachtraktionsadresse eingetragen. Steht in dieser CV ein Wert &gt; 0, so benutzt der Decoder diese CV als Adresse und nicht die Basisadresse aus CV1.&#xA;&#xA;"></CV>
+		<CV Name="Konfiguration" CV="29" DefaultValue="6" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Umgekehrtes Richtungsverhalten" Number="0"></Bit>
+			<BitOption Name="" Number="1" Option0="14 Fahrstufen DCC" Option1="28 oder 128 Fahrstufen DCC"></BitOption>
+			<Bit Name="Analogbetrieb erlauben" Number="2"></Bit>
+			<BitOption Name="" Number="4" Option0="Motorkennlinie durch CV 2, 5, 6" Option1="Motorkennlinie durch CV 67 - 94"></BitOption>
+			<BitOption Name="" Number="5" Option0="Kurze Adressen (CV 1) im DCC-Betrieb" Option1="Lange Adressen (CV 17+18) im DCC-Betrieb"></BitOption>
+		</CV>
+		<CV Name="Fehleranzeige" LongDescription="Hier gesetzte Bits informieren über Fehler, die die interne Testroutine des Decoders gefunden hat.&#xA;Nach Beseitigung der Fehlerursache löschen Sie diese Bit's per Programmierung wieder. Bei erneutem Fehler werden sie wieder gesetzt." CV="30" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Fehler Motor" Number="0"></Bit>
+			<Bit Name="Fehler Licht" Number="1"></Bit>
+		</CV>
+		<CV Name="Spezial CV" CV="53" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="7">
+				<Option Name="Programmierhile Lokmaus (+0)" Value="0"></Option>
+				<Option Name="Programmierhile Lokmaus (+100)" Value="1"></Option>
+				<Option Name="Programmierhile Lokmaus (+200)" Value="2"></Option>
+				<Option Name="Programmierung und Rückmeldung sperren" Value="66"></Option>
+				<Option Name="Programmierung und Rückmeldung freigeben" Value="77"></Option>
+			</BitGroupSelector>
+		</CV>
+		<CV Name="Anwender CV" LongDescription="persönliche Daten des Anwenders" CV="105" DefaultValue="0" Min="0" Max="255"></CV>
+		<CV Name="Anwender CV" LongDescription="persönliche Daten des Anwenders" CV="106" DefaultValue="0" Min="0" Max="255"></CV>
+		<CV Name="Auswahl CV-Gruppen" LongDescription="Es können für alle CV zwei Gruppen angelegt werden. Welche CD-Gruppe aktiv ist, wird mittels diese CV ausgewählt. Bei einem Hardwarereset wird die aktuell eingestellte CV-Gruppe auf Werkeinstellung zurück gesetzt. (ausser CV109 und CV367-94)&#xA;" CV="109" DefaultValue="0" Min="0" Max="1" Mode="BitMode">
+			<BitOption Name="" Number="0" Option0="Standardgruppe" Option1="Spezialgruppe"></BitOption>
+		</CV>
+	</Group>
+	<Group Name="Funktionszuordnung">
+		<CV Name="Funktionszuordnung F0 vorwärts" CV="33" LongDescription="Funktionszuordnung für Funktion &quot;F0 Vorwärts&quot;" DefaultValue="1" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F0 rückwärts" CV="34" LongDescription="Funktionszuordnung für Funktion &quot;F0 Rückwärts&quot;" DefaultValue="2" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F1" CV="35" LongDescription="Funktionszuordnung für Funktion &quot;F1&quot;" DefaultValue="4" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F2" CV="36" LongDescription="Funktionszuordnung für Funktion &quot;F2&quot;" DefaultValue="8" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F3" CV="37" LongDescription="Funktionszuordnung für Funktion &quot;F3&quot;" DefaultValue="16" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F4" CV="38" LongDescription="Funktionszuordnung für Funktion &quot;F4&quot;" DefaultValue="4" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F5" CV="39" LongDescription="Funktionszuordnung für Funktion &quot;F5&quot;" DefaultValue="8" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F6" CV="40" LongDescription="Funktionszuordnung für Funktion &quot;F6&quot;" DefaultValue="16" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F7" CV="41" LongDescription="Funktionszuordnung für Funktion &quot;F7&quot;" DefaultValue="32" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F8" CV="42" LongDescription="Funktionszuordnung für Funktion &quot;F8&quot;" DefaultValue="64" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F9" LongDescription="Funktionszuordnung für Funktion &quot;F9&quot;" CV="43" DefaultValue="16" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F10" LongDescription="Funktionszuordnung für Funktion &quot;F10&quot;" CV="44" DefaultValue="32" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F11" LongDescription="Funktionszuordnung für Funktion &quot;F11&quot;" CV="45" DefaultValue="64" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F12" LongDescription="Funktionszuordnung für Funktion &quot;F12&quot;" CV="46" DefaultValue="128" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F0 vorwärts" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F0 Vorwärts&quot;" CV="163" DefaultValue="1" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F0 rückwärts" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F0 Rückwärts&quot;" CV="164" DefaultValue="2" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F1" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F1&quot;" CV="165" DefaultValue="4" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F2" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F2&quot;" CV="166" DefaultValue="8" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F3" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F3&quot;" CV="167" DefaultValue="16" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F4" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F4&quot;" CV="168" DefaultValue="4" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F5" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F5&quot;" CV="169" DefaultValue="8" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F6" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F6&quot;" CV="170" DefaultValue="16" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F7" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F7&quot;" CV="171" DefaultValue="32" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F8" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F8&quot;" CV="172" DefaultValue="64" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F9" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F9&quot;" CV="173" DefaultValue="16" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F10" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F10&quot;" CV="174" DefaultValue="32" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F11" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F11&quot;" CV="175" DefaultValue="64" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+		<CV Name="Funktionszuordnung F12" LongDescription="erweiterte Funktionszuordnung für Funktion &quot;F12&quot;" CV="176" DefaultValue="128" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 4" Number="0"></Bit>
+			<Bit Name="Ausgang 5" Number="1"></Bit>
+			<Bit Name="Ausgang 6" Number="2"></Bit>
+			<Bit Name="Ausgang 7" Number="3"></Bit>
+			<Bit Name="Ausgang 8" Number="4"></Bit>
+			<Bit Name="Ausgang 9" Number="5"></Bit>
+			<Bit Name="Ausgang 10" Number="6"></Bit>
+			<Bit Name="Ausgang 11" Number="7"></Bit>
+		</CV>
+	</Group>
+	<Group Name="Funktionskonfiguration">
+		<CV Name="Dimmen der Funktionsausgänge" CV="54" DefaultValue="50" Min="0" Max="100" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Dimmen der Kupplungsausgänge" CV="55" DefaultValue="50" Min="0" Max="100" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Schaltzeit der Kupplungsausgänge" CV="56" DefaultValue="60" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Dimm-Maske der Funktionsausgänge" CV="57" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Dimm-Maske der Kupplungsausgänge" CV="58" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Ausgang 1" Number="0"></Bit>
+			<Bit Name="Ausgang 2" Number="1"></Bit>
+			<Bit Name="Ausgang 3" Number="2"></Bit>
+			<Bit Name="Ausgang 4" Number="3"></Bit>
+			<Bit Name="Ausgang 5" Number="4"></Bit>
+			<Bit Name="Ausgang 6" Number="5"></Bit>
+			<Bit Name="Ausgang 7" Number="6"></Bit>
+			<Bit Name="Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Dimmwerte der Effekte" LongDescription="unterer Helligkeitswert für Lichteffekte (siehe CV154-161)&#xA;&#xA;Es wird die durchschnittliche Spannung reduziert. Der Wert stellt einen prozentualen Wert dar." CV="114" DefaultValue="0" Min="0" Max="100" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Pausendauer der Effekte" LongDescription="definiert die Zeit (Dauer) zwischen 2 Effekten" CV="115" DefaultValue="0" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Rangiergang F3" CV="116" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="Anfahr- und Bremsverzögerung (CV3, CV4) ausschalten" Number="0"></Bit>
+			<Bit Name="maximale Geschwindigkeit wird halbiert" Number="1"></Bit>
+			<Bit Name="rückwärts nur 65% der maximalen Geschwindigkeit" Number="2"></Bit>
+			<Bit Name="Bremsen mit Diode aktiv" Number="3"></Bit>
+			<Bit Name="Bremsen mit Diode NICHT Richtungsabhängig" Number="4"></Bit>
+			<Bit Name="Zugbeeinflussung wirkt nicht bei Rangierfunktion" Number="6"></Bit>
+		</CV>
+		<CV Name="Abblendtaste" LongDescription="Nummer der Funktionstaste, welche abblendet (F1-F12)&#xA;Es ist nur eine F-Taste möglich." CV="117" DefaultValue="0" Min="0" Max="12" Mode="BitMode">
+			<BitGroupDigit Name="F-Taste zum abblenden" Number="0" EndNumber="3" Min="0" Max="12"></BitGroupDigit>
+		</CV>
+		<CV Name="Maske für Abblendfunktion" LongDescription="Hier wird festgelegt an welchem Ausgang mit der Taste aus CV117 abgeblendet wird. Es können mehrere Ausgänge (max. 8 ) definiert werden.&#xA;" CV="118" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="schaltet den Ausgang A1 (Licht vorne)" Number="0"></Bit>
+			<Bit Name="schaltet den Ausgang 2 (licht hinten)" Number="1"></Bit>
+			<Bit Name="schaltet den Ausgang 3" Number="2"></Bit>
+			<Bit Name="schaltet den Ausgang 4" Number="3"></Bit>
+			<Bit Name="schaltet den Ausgang 5" Number="4"></Bit>
+			<Bit Name="schaltet den Ausgang 6" Number="5"></Bit>
+			<Bit Name="schaltet den Ausgang 7" Number="6"></Bit>
+			<Bit Name="schaltet den Ausgang 8" Number="7"></Bit>
+		</CV>
+		<CV Name="Dimmwerte für Abblendfunktion" LongDescription="Es wird die durchschnittliche Spannung reduziert. Der Wert stellt einen prozentualen Wert dar." CV="119" DefaultValue="0" Min="0" Max="100" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Zyklusdauer der Effekte" LongDescription="definiert wie lange ein Effekt dauern soll&#xA;" CV="120" DefaultValue="0" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Kurzschluss-Schwelle 1 Zusatzfunktion" LongDescription="sofortige Abschaltung bei Überlastung der Zusatzfunktion" CV="139" DefaultValue="15" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Kurzschluss-Schwelle 2 Zusatzfunktion" LongDescription="rasche Abschaltung bei Überlastung der Zusatzfunktion" CV="140" DefaultValue="12" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Kurzschluss-Schwelle 3 Zusatzfunktion" LongDescription="langsame Abschaltung bei Überlastung der Zusatzfunktion" CV="141" DefaultValue="10" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Entlastung der Kupplung" LongDescription="Tempo beimzurückdrücken (Lok fährt in die umgekehrte Richtung)" CV="147" DefaultValue="20" Min="0" Max="126" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Wegfahren von Waggons" LongDescription="Tempo beim Wegfahren von den Waggons (Lok fährt in die aktuelle Richtung)" CV="148" DefaultValue="50" Min="0" Max="126" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Entlastungszeit" LongDescription="die Zeit für das Zurückdrücken (Einheit = 0,1 sec)" CV="149" DefaultValue="10" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Wegfahrzeit" LongDescription="die Zeit für das Wegfahren (Einheit = 0,1 sec)" CV="150" DefaultValue="30" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Abkuppeltaste" LongDescription="Nummer der Funktionstaste, welche  die Abkuppelfunktion auslöst (F1-F12)&#xA;" CV="151" DefaultValue="0" Min="0" Max="12" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="3">
+				<Option Name="keine F-Taste (ausgeschaltet)" Value="0"></Option>
+				<Option Name="F1" Value="1"></Option>
+				<Option Name="F2" Value="2"></Option>
+				<Option Name="F3" Value="3"></Option>
+				<Option Name="F4" Value="4"></Option>
+				<Option Name="F5" Value="5"></Option>
+				<Option Name="F6" Value="6"></Option>
+				<Option Name="F7" Value="7"></Option>
+				<Option Name="F8" Value="8"></Option>
+				<Option Name="F9" Value="9"></Option>
+				<Option Name="F10" Value="10"></Option>
+				<Option Name="F11" Value="11"></Option>
+				<Option Name="F12" Value="12"></Option>
+			</BitGroupSelector>
+		</CV>
+		<CV Name="Abkuppeln-Maske vorwärts" LongDescription="Auswahl der zu verwendenden Funktion" CV="152" DefaultValue="8" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="F2" Number="2"></Bit>
+			<Bit Name="F3" Number="3"></Bit>
+			<Bit Name="F4" Number="4"></Bit>
+			<Bit Name="F5" Number="5"></Bit>
+			<Bit Name="F6" Number="6"></Bit>
+			<Bit Name="F7" Number="7"></Bit>
+		</CV>
+		<CV Name="Abkuppeln-Maske rückwärts" LongDescription="Auswahl der zu verwendenden Funktion" CV="153" DefaultValue="8" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="F2" Number="2"></Bit>
+			<Bit Name="F3" Number="3"></Bit>
+			<Bit Name="F4" Number="4"></Bit>
+			<Bit Name="F5" Number="5"></Bit>
+			<Bit Name="F6" Number="6"></Bit>
+			<Bit Name="F7" Number="7"></Bit>
+		</CV>
+		<CV Name="Effekt für A1" LongDescription="Effektauswahl für Ausgang 1" CV="154" DefaultValue="0" Min="0" Max="139" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="3">
+				<Option Name="kein Effekt" Value="0"></Option>
+				<Option Name="Blinken" Value="1"></Option>
+				<Option Name="Blinken im Gegentakt" Value="2"></Option>
+				<Option Name="Single Pulse Strobe" Value="3"></Option>
+				<Option Name="Double Strobe" Value="4"></Option>
+				<Option Name="Flashing Headlight" Value="5"></Option>
+				<Option Name="Ditch-Light links" Value="6"></Option>
+				<Option Name="Ditch-Light rechts" Value="7"></Option>
+				<Option Name="Rotary Beacon" Value="8"></Option>
+				<Option Name="Gyralite" Value="9"></Option>
+				<Option Name="Mars Light" Value="10"></Option>
+				<Option Name="Soft-Start" Value="11"></Option>
+			</BitGroupSelector>
+			<BitGroupSelector Name="" Number="6" EndNumber="7">
+				<Option Name="Effekt gilt für beide Fahrtrichtungen" Value="0"></Option>
+				<Option Name="Effekt gilt nur für Vorwärtsfahrt" Value="1"></Option>
+				<Option Name="Effekt gilt nur für Rückwärtsfahrt" Value="2"></Option>
+			</BitGroupSelector>
+		</CV>
+		<CV Name="Effekt für A2" LongDescription="Effektauswahl für Ausgang 2" CV="155" DefaultValue="0" Min="0" Max="139" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="3">
+				<Option Name="kein Effekt" Value="0"></Option>
+				<Option Name="Blinken" Value="1"></Option>
+				<Option Name="Blinken im Gegentakt" Value="2"></Option>
+				<Option Name="Single Pulse Strobe" Value="3"></Option>
+				<Option Name="Double Strobe" Value="4"></Option>
+				<Option Name="Flashing Headlight" Value="5"></Option>
+				<Option Name="Ditch-Light links" Value="6"></Option>
+				<Option Name="Ditch-Light rechts" Value="7"></Option>
+				<Option Name="Rotary Beacon" Value="8"></Option>
+				<Option Name="Gyralite" Value="9"></Option>
+				<Option Name="Mars Light" Value="10"></Option>
+				<Option Name="Soft-Start" Value="11"></Option>
+			</BitGroupSelector>
+			<BitGroupSelector Name="" Number="6" EndNumber="7">
+				<Option Name="Effekt gilt für beide Fahrtrichtungen" Value="0"></Option>
+				<Option Name="Effekt gilt nur für Vorwärtsfahrt" Value="1"></Option>
+				<Option Name="Effekt gilt nur für Rückwärtsfahrt" Value="2"></Option>
+			</BitGroupSelector>
+		</CV>
+		<CV Name="Effekt für A3" LongDescription="Effektauswahl für Ausgang 3" CV="156" DefaultValue="0" Min="0" Max="139" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="3">
+				<Option Name="kein Effekt" Value="0"></Option>
+				<Option Name="Blinken" Value="1"></Option>
+				<Option Name="Blinken im Gegentakt" Value="2"></Option>
+				<Option Name="Single Pulse Strobe" Value="3"></Option>
+				<Option Name="Double Strobe" Value="4"></Option>
+				<Option Name="Flashing Headlight" Value="5"></Option>
+				<Option Name="Ditch-Light links" Value="6"></Option>
+				<Option Name="Ditch-Light rechts" Value="7"></Option>
+				<Option Name="Rotary Beacon" Value="8"></Option>
+				<Option Name="Gyralite" Value="9"></Option>
+				<Option Name="Mars Light" Value="10"></Option>
+				<Option Name="Soft-Start" Value="11"></Option>
+			</BitGroupSelector>
+			<BitGroupSelector Name="" Number="6" EndNumber="7">
+				<Option Name="Effekt gilt für beide Fahrtrichtungen" Value="0"></Option>
+				<Option Name="Effekt gilt nur für Vorwärtsfahrt" Value="1"></Option>
+				<Option Name="Effekt gilt nur für Rückwärtsfahrt" Value="2"></Option>
+			</BitGroupSelector>
+		</CV>
+		<CV Name="Effekt für A4" LongDescription="Effektauswahl für Ausgang 4" CV="157" DefaultValue="0" Min="0" Max="139" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="3">
+				<Option Name="kein Effekt" Value="0"></Option>
+				<Option Name="Blinken" Value="1"></Option>
+				<Option Name="Blinken im Gegentakt" Value="2"></Option>
+				<Option Name="Single Pulse Strobe" Value="3"></Option>
+				<Option Name="Double Strobe" Value="4"></Option>
+				<Option Name="Flashing Headlight" Value="5"></Option>
+				<Option Name="Ditch-Light links" Value="6"></Option>
+				<Option Name="Ditch-Light rechts" Value="7"></Option>
+				<Option Name="Rotary Beacon" Value="8"></Option>
+				<Option Name="Gyralite" Value="9"></Option>
+				<Option Name="Mars Light" Value="10"></Option>
+				<Option Name="Soft-Start" Value="11"></Option>
+			</BitGroupSelector>
+			<BitGroupSelector Name="" Number="6" EndNumber="7">
+				<Option Name="Effekt gilt für beide Fahrtrichtungen" Value="0"></Option>
+				<Option Name="Effekt gilt nur für Vorwärtsfahrt" Value="1"></Option>
+				<Option Name="Effekt gilt nur für Rückwärtsfahrt" Value="2"></Option>
+			</BitGroupSelector>
+		</CV>
+		<CV Name="Effekt für A5" LongDescription="Effektauswahl für Ausgang 5" CV="158" DefaultValue="0" Min="0" Max="139" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="3">
+				<Option Name="kein Effekt" Value="0"></Option>
+				<Option Name="Blinken" Value="1"></Option>
+				<Option Name="Blinken im Gegentakt" Value="2"></Option>
+				<Option Name="Single Pulse Strobe" Value="3"></Option>
+				<Option Name="Double Strobe" Value="4"></Option>
+				<Option Name="Flashing Headlight" Value="5"></Option>
+				<Option Name="Ditch-Light links" Value="6"></Option>
+				<Option Name="Ditch-Light rechts" Value="7"></Option>
+				<Option Name="Rotary Beacon" Value="8"></Option>
+				<Option Name="Gyralite" Value="9"></Option>
+				<Option Name="Mars Light" Value="10"></Option>
+				<Option Name="Soft-Start" Value="11"></Option>
+			</BitGroupSelector>
+			<BitGroupSelector Name="" Number="6" EndNumber="7">
+				<Option Name="Effekt gilt für beide Fahrtrichtungen" Value="0"></Option>
+				<Option Name="Effekt gilt nur für Vorwärtsfahrt" Value="1"></Option>
+				<Option Name="Effekt gilt nur für Rückwärtsfahrt" Value="2"></Option>
+			</BitGroupSelector>
+		</CV>
+		<CV Name="Effekt für A6" LongDescription="Effektauswahl für Ausgang 6" CV="159" DefaultValue="0" Min="0" Max="139" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="3">
+				<Option Name="kein Effekt" Value="0"></Option>
+				<Option Name="Blinken" Value="1"></Option>
+				<Option Name="Blinken im Gegentakt" Value="2"></Option>
+				<Option Name="Single Pulse Strobe" Value="3"></Option>
+				<Option Name="Double Strobe" Value="4"></Option>
+				<Option Name="Flashing Headlight" Value="5"></Option>
+				<Option Name="Ditch-Light links" Value="6"></Option>
+				<Option Name="Ditch-Light rechts" Value="7"></Option>
+				<Option Name="Rotary Beacon" Value="8"></Option>
+				<Option Name="Gyralite" Value="9"></Option>
+				<Option Name="Mars Light" Value="10"></Option>
+				<Option Name="Soft-Start" Value="11"></Option>
+			</BitGroupSelector>
+			<BitGroupSelector Name="" Number="6" EndNumber="7">
+				<Option Name="Effekt gilt für beide Fahrtrichtungen" Value="0"></Option>
+				<Option Name="Effekt gilt nur für Vorwärtsfahrt" Value="1"></Option>
+				<Option Name="Effekt gilt nur für Rückwärtsfahrt" Value="2"></Option>
+			</BitGroupSelector>
+		</CV>
+		<CV Name="Effekt für A7" LongDescription="Effektauswahl für Ausgang 7" CV="160" DefaultValue="0" Min="0" Max="139" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="3">
+				<Option Name="kein Effekt" Value="0"></Option>
+				<Option Name="Blinken" Value="1"></Option>
+				<Option Name="Blinken im Gegentakt" Value="2"></Option>
+				<Option Name="Single Pulse Strobe" Value="3"></Option>
+				<Option Name="Double Strobe" Value="4"></Option>
+				<Option Name="Flashing Headlight" Value="5"></Option>
+				<Option Name="Ditch-Light links" Value="6"></Option>
+				<Option Name="Ditch-Light rechts" Value="7"></Option>
+				<Option Name="Rotary Beacon" Value="8"></Option>
+				<Option Name="Gyralite" Value="9"></Option>
+				<Option Name="Mars Light" Value="10"></Option>
+				<Option Name="Soft-Start" Value="11"></Option>
+			</BitGroupSelector>
+			<BitGroupSelector Name="" Number="6" EndNumber="7">
+				<Option Name="Effekt gilt für beide Fahrtrichtungen" Value="0"></Option>
+				<Option Name="Effekt gilt nur für Vorwärtsfahrt" Value="1"></Option>
+				<Option Name="Effekt gilt nur für Rückwärtsfahrt" Value="2"></Option>
+			</BitGroupSelector>
+		</CV>
+		<CV Name="Effekt für A8" LongDescription="Effektauswahl für Ausgang 8" CV="161" DefaultValue="0" Min="0" Max="139" Mode="BitMode">
+			<BitGroupSelector Name="" Number="0" EndNumber="3">
+				<Option Name="kein Effekt" Value="0"></Option>
+				<Option Name="Blinken" Value="1"></Option>
+				<Option Name="Blinken im Gegentakt" Value="2"></Option>
+				<Option Name="Single Pulse Strobe" Value="3"></Option>
+				<Option Name="Double Strobe" Value="4"></Option>
+				<Option Name="Flashing Headlight" Value="5"></Option>
+				<Option Name="Ditch-Light links" Value="6"></Option>
+				<Option Name="Ditch-Light rechts" Value="7"></Option>
+				<Option Name="Rotary Beacon" Value="8"></Option>
+				<Option Name="Gyralite" Value="9"></Option>
+				<Option Name="Mars Light" Value="10"></Option>
+				<Option Name="Soft-Start" Value="11"></Option>
+			</BitGroupSelector>
+			<BitGroupSelector Name="" Number="6" EndNumber="7">
+				<Option Name="Effekt gilt für beide Fahrtrichtungen" Value="0"></Option>
+				<Option Name="Effekt gilt nur für Vorwärtsfahrt" Value="1"></Option>
+				<Option Name="Effekt gilt nur für Rückwärtsfahrt" Value="2"></Option>
+			</BitGroupSelector>
+		</CV>
+	</Group>
+	<Group Name="Motorkonfiguration">
+		<CV Name="Wiederholrate" CV="9" DefaultValue="134" Min="0" Max="255" Mode="BitMode">
+			<BitOption Name="" Number="7" Option0="30-150Hz" Option1="16kHz"></BitOption>
+			<BitGroupDigit Name="Wiederholrate" Number="0" EndNumber="5" Min="13" Max="63" Slider="1"></BitGroupDigit>
+		</CV>
+		<CV Name="Kennlinie" CV="67" Mode="DCCSpeedCurve">
+			<SubCV Number="0" DefaultValue="9"></SubCV>
+			<SubCV Number="1" DefaultValue="18"></SubCV>
+			<SubCV Number="2" DefaultValue="27"></SubCV>
+			<SubCV Number="3" DefaultValue="36"></SubCV>
+			<SubCV Number="4" DefaultValue="45"></SubCV>
+			<SubCV Number="5" DefaultValue="54"></SubCV>
+			<SubCV Number="6" DefaultValue="63"></SubCV>
+			<SubCV Number="7" DefaultValue="72"></SubCV>
+			<SubCV Number="8" DefaultValue="81"></SubCV>
+			<SubCV Number="9" DefaultValue="90"></SubCV>
+			<SubCV Number="10" DefaultValue="99"></SubCV>
+			<SubCV Number="11" DefaultValue="108"></SubCV>
+			<SubCV Number="12" DefaultValue="117"></SubCV>
+			<SubCV Number="13" DefaultValue="126"></SubCV>
+			<SubCV Number="14" DefaultValue="135"></SubCV>
+			<SubCV Number="15" DefaultValue="144"></SubCV>
+			<SubCV Number="16" DefaultValue="153"></SubCV>
+			<SubCV Number="17" DefaultValue="162"></SubCV>
+			<SubCV Number="18" DefaultValue="171"></SubCV>
+			<SubCV Number="19" DefaultValue="180"></SubCV>
+			<SubCV Number="20" DefaultValue="189"></SubCV>
+			<SubCV Number="21" DefaultValue="198"></SubCV>
+			<SubCV Number="22" DefaultValue="207"></SubCV>
+			<SubCV Number="23" DefaultValue="216"></SubCV>
+			<SubCV Number="24" DefaultValue="225"></SubCV>
+			<SubCV Number="25" DefaultValue="234"></SubCV>
+			<SubCV Number="26" DefaultValue="243"></SubCV>
+			<SubCV Number="27" DefaultValue="252"></SubCV>
+		</CV>
+		<CV Name="Regeleinfluss" LongDescription="Der eingestellte Wert 255 steht für eine sehr schnelle und genaue Nachregelung. Man spricht auch von einer harten Regelung. Senkt man den Wert ab, erhöht sich zwangsläufig die Bandbreite der Drehzahl, also die Drehzahl des Motors wird unter veränderten Lasten nicht mehr so konstant gehalten, wie bei einem hohen Wert in CV 50." CV="50" DefaultValue="255" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="P-Regler" LongDescription="optimieren der Regeleigenschaft" CV="51" DefaultValue="80" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="I-Regler" LongDescription="optimieren der Regeleigenschaft" CV="52" DefaultValue="40" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Zugbeeinflussung 'L'" LongDescription="gewählte Geschwindigkeit für 'L'-Abschnitt (+ Bremsdioden)" CV="59" DefaultValue="168" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Zugbeeinflussung 'U'" LongDescription="gewählte Geschwindigkeit für 'U'-Abschnitt (+ Bremsdioden)" CV="60" DefaultValue="84" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Anfahrverzögerung" LongDescription="Zeit zwischen Freigabe und Fahrteintritt HLU (+ Bremsdioden)" CV="61" DefaultValue="1" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Regelungsfrequenz" LongDescription="Fahreigenschaft in Abhängigkeit der Schienenspannung" CV="64" DefaultValue="110" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Zugbeeinflussung 'F-L'" LongDescription="gewählte Geschwindigkeit zwischen F-L (MX9 bzw. HLU)&#xA;gilt ab Version 52&#xA;siehe CV59, 60, 137&#xA;" CV="96" DefaultValue="212" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Zugbeeinflussung 'L-U'" LongDescription="gewählte Geschwindigkeit zwischen L-U (MX9 bzw. HLU)&#xA;gilt ab Version 52&#xA;siehe CV59, 60, 137&#xA;" CV="97" DefaultValue="126" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Zugbeeinflussung 'U-Stopp'" LongDescription="gewählte Geschwindigkeit zwischen U-Stopp (MX9 bzw. HLU)&#xA;gilt ab Version 52&#xA;siehe CV59, 60, 137&#xA;" CV="98" DefaultValue="42" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Intensität Quittierung" LongDescription="Hiermit wird die Intensität der Quittierungsimpulse (ACK) eingestellt).&#xA;CV111=128 enspricht 50% des max. Quittierungsstromes" CV="111" DefaultValue="255" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Spezial CV" LongDescription="verschiedene Sondereinstellungen" CV="137" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<BitOption Name="" Number="0" Option0="Zimo MAN-Bit 8 Funktionen" Option1="Zimo MAN-Bit 14 Funktionen"></BitOption>
+			<Bit Name="Zimo Zugnummernerkennung" Number="1"></Bit>
+			<Bit Name="Zimo signalabhängige Zugbeeinflussung (HLU)" Number="4"></Bit>
+			<Bit Name="LGB Impulse über F4 auswerten" Number="6"></Bit>
+			<BitOption Name="" Number="7" Option0="Motoransteuerungsfrequenz aus CV9" Option1="Motoransteuerungsfrequenz 32KHz"></BitOption>
+		</CV>
+		<CV Name="Bremszeit (HLU)" CV="138" DefaultValue="3" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Kurzschluss-Schwelle 1 Motor" LongDescription="sofortige Abschaltung bei Überlastung des Motors" CV="142" DefaultValue="90" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Kurzschluss-Schwelle 2 Motor" LongDescription="rasche Abschaltung bei Überlastung des Motors" CV="143" DefaultValue="80" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Kurzschluss-Schwelle 3 Motor" LongDescription="langsame Abschaltung bei Überlastung des Motors" CV="144" DefaultValue="70" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+	</Group>
+</Decoder>

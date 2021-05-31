@@ -63,6 +63,7 @@ void setup() {
   // Pref::set(prefNamePasswd, "");
   Webserver::webconfig(); 
 
+
   // Z21-Adresse bekanntgeben (kann über Webserver geändert werden)
   Z21::setIPAddress(Pref::get(prefNameZ21IPAddr, Z21_DEFAULT_ADDR));
 
@@ -73,8 +74,10 @@ void setup() {
   Route::begin();
 
   // GUI initialisieren
-  Page::begin(&M5.lcd);
+  Page::begin(&M5.lcd); 
   if (!Page::isBlocked()) Page::currentPage()->setVisible(true, true);
+
+  Serial.printf("Heapauslastung zu Beginn: %d Byte\n", ESP.getFreeHeap());
 
 }
 

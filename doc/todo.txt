@@ -1,20 +1,19 @@
-
-
-Initiales Setzen des Adressschritts auch visualisieren. AUch: Pfeil ab/auf sind überlagertem
-
+FEHLER ----------------
 
 Beschleunigt initial von 1 statt von aktueller Fahrstufe aus!
 
-Bibliotheksmodus: überspringen von nicht enthaltenen Adressen klappt nicht ... (z.B: Adresse 21, 22)
+Progmodeverhalten: wo beenden: "// setProgStateOn(false);" suchen, das schaltet ja nicht, sondern setzt nur Flag
 
-Löschen der Zielfahrstraße im manuellen Modus funktioniert nicht
+Ausblenden der Zielfahrstufe im manuellen Modus funktioniert nicht
+
+OPTIMIERUNG ---------------------
 
 Optimierung: setVisible nur bearbeiten (redraw), wenn sich Wert geändert hatte, allerdings entfällt der "force"-Charakter
 
 Optimierung: Lebenszeichen unterbricht - kurz - das Lokfahren und sollte dann nicht gemacht werden (gibt leichte Ruckler)
 
+FEATURES -------------------------
 
-Nach Verbindungsproblemen: AP-Seite mit überlagertem "Automatisch"-Button
+Optimierung: 2. WLAN (WiFiMulti). Anzeigen, mit welchem verbunden!
 
-
-Progmodeverhalten: wo beenden: "// setProgStateOn(false);" suchen, das schaltet ja nicht, sondern setzt nur Flag
+Seite mit aktueller Lok und deren Fahrstufe als Großanzeige, vielleicht auch alle 5 Loks

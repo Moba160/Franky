@@ -25,7 +25,7 @@ class TrackPage: public Page, public Z21Observer {
     TrackPage(char navigable);
     virtual void setVisible(bool visible, bool clearScreen) override;
     virtual void buttonPressed(M5Btn::ButtonType button) override;
-    virtual bool isBeta() override { return true; }
+    virtual bool isBeta() override { return false; }
 
   private:
 
@@ -33,7 +33,6 @@ class TrackPage: public Page, public Z21Observer {
 
     int routeFilter = RT_ELEFT;
     int selectedRoute = 0;
-    int routeGroup = 1;
     void drawTracks();
 
     Textbox* fstName;

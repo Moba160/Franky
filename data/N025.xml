@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="decoder.xsl"?>
+
+<Decoder Name="Kühn N025" DCC="1" MM="1" ResetCV="8" ResetValue="8" Deprecated="1">
+	<Group Name="Grunddaten">
+		<CV Name="Lokadresse" LongDescription="DCC kurze Adrersse (CV1): 1- 127 oder 1-99, je nach Digitalsystem&#xA;Motorola kurze Adresse (CV1): 1-255&#xA;DCC Lange Adresse (CV17 und 18): bis 9999&#xA;Die CV29 (Bit 5), zur Umschaltung zwischen langer und kurzer Adresse, wird  automatisch beim programmieren der Adresse angepasst." CV="1" DefaultValue="3" Min="1" Max="9999" Mode="DCCLongAddress"></CV>
+		<CV Name="Startspannung (Vmin)" LongDescription="Die Startspannung ist die Spannung, die bei Fahrstufe 1 an den Motor ausgegeben wird." CV="2" DefaultValue="3" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Beschleunigungsrate" LongDescription="Der Inhalt dieser CV entspricht etwa der Zeit in Sekunden, die beim Beschleunigen von 0 bis zum Erreichen der Maximalgeschwindigkeit vergehen. Der Wert von 0 bedeutet eine sofortige Änderung." CV="3" DefaultValue="2" Min="0" Max="63" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Verzögerungsrate" LongDescription="Der Wert in dieser CV definiert die Bremsverzögerung in der Wertigkeit analog zu CV3." CV="4" DefaultValue="2" Min="0" Max="63" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Maximalspannung (Vmax)" LongDescription="Die Maximalspannung ist die Spannung, die bei der höchsten Fahrstufe an den Motor ausgegeben wird. Ein Wert von 2 entspricht etwa 0,8%, ein Wert von 255 entspricht 100% der max. Motorspannung." CV="5" DefaultValue="0" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Mittelspannung (Vmid)" LongDescription="Die Mittelspannung ist die Spannung, die bei der mittleren Fahrstufe (je nach Mode bei Stufe 7, 14 oder 64) an den Motor ausgegeben wird.&#xA;Ist CV6=0 wird eine exponentielle Kennlinie (CV6=1 wird eine lineare Kennlinie ) verwendet, d.h. die Änderung der Geschwindigkeit ist von der Fahrstufe abhängig." CV="6" DefaultValue="0" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Versionsnummer" CV="7" DefaultValue="34" Min="34" Max="255" ReadOnly="1" LongDescription="Hier sehen Sie die Versionsnummer des Lokempfängers."></CV>
+		<CV Name="Herstelleridentnummer" CV="8" DefaultValue="157" Min="0" Max="255" ReadOnly="1" LongDescription="Die Nummer in dieser CV informiert Sie, wer der Hersteller des Decoders ist. Jede Firma, die DCC-Decoder herstellt, hat eine eigene Nummer. Eine Liste mit den Herstellerkennungen finden Sie z. B. auf der Website der NMRA (www.nmra.org). Diese CV kann nur gelesen, nicht beschrieben werden. Wenn Sie alle CVs des Decoders auf Werkseinstellung zurücksetzen möchten, so schreiben Sie in die CV8 einen bestimmten Wert laut Herstellerdokumentation. Ihr System liest allerdings eventuell einen anderen oder keinen Wert zurück. Dadurch kommt es zu einer Fehlermeldung. Der Reset wurde aber dennoch ausgeführt."></CV>
+		<CV Name="Analog-Funktionsstatus F1-F8" LongDescription="Hier bestimmen Sie, welche Funktionen im reinen Analogbetrieb eingeschaltet werden sollen. Die Funktion F0 (Licht) wird im Analogbetrieb immer eingeschaltet. &#xA;Sollen z. B. die Funktionen F1 und F3 im Analogmodus eingeschaltet werden, so haken Sie die beiden Funktionen an." CV="13" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="F1" Number="0"></Bit>
+			<Bit Name="F2" Number="1"></Bit>
+			<Bit Name="F3" Number="2"></Bit>
+			<Bit Name="F4" Number="3"></Bit>
+			<Bit Name="F5" Number="4"></Bit>
+			<Bit Name="F6" Number="5"></Bit>
+			<Bit Name="F7" Number="6"></Bit>
+			<Bit Name="F8" Number="7"></Bit>
+		</CV>
+		<CV Name="Consistadresse" CV="19" DefaultValue="0" Min="0" Max="255" LongDescription="Mehrfachtraktionsadresse:&#xA;&#xA;In diese CV wird die Mehrfachtraktionsadresse eingetragen. Steht in dieser CV ein Wert &gt; 0, so benutzt der Decoder diese CV als Adresse und nicht die Basisadresse aus CV1."></CV>
+		<CV Name="Konfigurationsregister" CV="29" DefaultValue="6" Min="0" Max="255" Mode="BitMode" LongDescription="Die komplexeste CV innerhalb der DCC Norm. In diesem Register werden wichtige Informationen zusammengefasst, die allerdings teilweise nur im DCC-Betrieb relevant sind">
+			<Bit Name="Umgekehrtes Richtungsverhalten" Number="0"></Bit>
+			<BitOption Name="" Number="1" Option0="14 Fahrstufen DCC" Option1="28 oder 128 Fahrstufen DCC"></BitOption>
+			<Bit Name="Analogbetrieb erlauben" Number="2"></Bit>
+			<BitOption Name="" Number="4" Option0="Motorkennlinie durch CV 2, 5, 6" Option1="Motorkennlinie durch CV 67 - 94"></BitOption>
+			<BitOption Name="" Number="5" Option0="Kurze Adressen (CV 1) im DCC-Betrieb" Option1="Lange Adressen (CV 17+18) im DCC-Betrieb"></BitOption>
+		</CV>
+		<CV Name="User  Konfig.-Register 1" CV="56" DefaultValue="6" Min="0" Max="7" Mode="BitMode" LongDescription="Festlegung der zusätzlichen Eigenschaften des Decoders, z. B. Einschalten der Lastregelung und Funktion des Ausgangs B. Die CV-Werte der von Ihnen gewünschten Funktionen müssen addiert und die Summe in CV56 programmiert werden. Bei einem CV-Wert von z. B. 1 (oder 3 bzw. 7) wird die&#xA;richtungsabhängige Beleuchtung ausgeschaltet. F0 schaltet jetzt den Ausgang A mit dem weißen Anschlussdraht. Der Ausgang B mit dem gelben Anschlussdraht wird durch die in CV58 festgelegte Funktion (F1..F8) gesteuert. Bei einem CV-Wert von z. B. 4 (oder 6) kann mit der&#xA;Funktionstaste F4 Ihrer Zentrale der Rangiergang ein- und ausgeschaltet werden. Ist der Rangiergang eingeschaltet, wird die Höchstgeschwindigkeit der Lok reduziert und die Anfahr- und Bremsverzögerung ausgeschaltet.">
+			<BitOption Name="" Number="0" Option0="Richtungsabhängige Beleuchtung (FL/F0 steuert weißen und gelben Anschlussdraht)" Option1="Richtungsabhängige Beleuchtung (CV58 steuert gelben Anschlussdraht)"></BitOption>
+			<Bit Name="Lastregelung eingeschaltet" Number="1"></Bit>
+			<Bit Name="Rangiergang mit Taste F4 schaltbar (ein/aus)" Number="2"></Bit>
+		</CV>
+		<CV Name="User-Konfig.-Register  2" CV="112" DefaultValue="0" Min="0" Max="255" Mode="BitMode" LongDescription="Festlegung zusätzlicher Eigenschaften des Decoders, z. B. Aktivierung der Rangierlichtfunktion an den Ausgängen A und B (beide Lichter an), wenn Rangiergang erlaubt (siehe CV56) und Rangiergang mit Taste F4 eingeschaltet ist.">
+			<Bit Name="mit Taste F4 wird Ausgang A (weiß) und B (gelb) gemeinsam geschaltet" Number="4"></Bit>
+			<Bit Name="Kurzzeitspeicher ausgeschaltet" Number="5"></Bit>
+		</CV>
+		<CV Name="User-Daten 1" CV="105" DefaultValue="0" Min="0" Max="255" LongDescription="Freie CV. Hier kann der Benutzer speichern, was er will, die Daten werden nicht zurückgesetzt."></CV>
+		<CV Name="User-Daten 2" CV="106" DefaultValue="0" Min="0" Max="255" LongDescription="Freie CV. Hier kann der Benutzer speichern, was er will, die Daten werden nicht zurückgesetzt."></CV>
+	</Group>
+	<Group Name="Funktionszuordnung">
+		<CV Name="Mapping Ausgang B" LongDescription="Hier können Sie festlegen, welche Funktion den Funktionsausgang steuert (engl. &quot;function mapping&quot;). Ausgang A (weiß) wird immer durch F0 (Licht) gesteuert. &#xA;Soll Ausgang B (gelb) durch F1 gesteuert werden, so haken Sie F1 an.. &#xA;Damit das auch funktioniert, muss dies in CV56 aktiviert werden." CV="58" DefaultValue="0" Min="0" Max="255" Mode="BitMode">
+			<Bit Name="F1" Number="0"></Bit>
+			<Bit Name="F2" Number="1"></Bit>
+			<Bit Name="F3" Number="2"></Bit>
+			<Bit Name="F4" Number="3"></Bit>
+			<Bit Name="F5" Number="4"></Bit>
+			<Bit Name="F6" Number="5"></Bit>
+			<Bit Name="F7" Number="6"></Bit>
+			<Bit Name="F8" Number="7"></Bit>
+		</CV>		
+	</Group>
+	<Group Name="Funktionskonfiguration">
+		<CV Name="Effekte Ausgang A (weiß)" CV="49" DefaultValue="0" Min="0" Max="255" Mode="BitMode" LongDescription="Mittels CV49,50 können Sie für die Funktionsausgänge spezielle Lichteffekte einstellen (z. B. Dimmen erlauben, Dimmwert in CV55). Der Zahlenwert (1,2,4,8 oder 16) für den gewünschten Lichteffekt wird zu den Einschaltbedingungen addiert und die Summe in das entsprechende Effektregister programmiert. Ein Wert von 0 schaltet alle Effekte des Ausgangs aus, es gibt dann nur die Zustände EIN und AUS. Ist die Leuchtstärke der Glühlämpchen durch die Digitalspannung zu hoch, können Sie diese durch &quot;Dimmen&quot; verringern. Dazu ist in die CVs für die Funktionsausgänge jeweils&#xA;ein Wert von 16 zu programmieren (Dimmen erlauben). Der Dimmwert (Helligkeit) der Lampen wird in CV55 eingestellt.">
+			<BitGroupSelector Name="" Number="0" EndNumber="4">
+				<Option Name="Aus" Value="0"></Option>
+				<Option Name="Pulsierendes Licht" Value="1"></Option>
+				<Option Name="Blitzlicht" Value="2"></Option>
+				<Option Name="Blinken Phase B" Value="4"></Option>
+				<Option Name="Blinken Phase A" Value="8"></Option>
+				<Option Name="Dimmen" Value="16"></Option>
+			</BitGroupSelector>
+			<Bit Name="Aus, wenn vorwärts" Number="6"></Bit>
+			<Bit Name="Aus, wenn rückwärts" Number="5"></Bit>
+			<Bit Name="Dimmen, wenn F3 EIN" Number="7"></Bit>
+		</CV>
+		<CV Name="Effekte Ausgang B (gelb)" CV="50" DefaultValue="0" Min="0" Max="255" Mode="BitMode" LongDescription="Mittels CV49,50 können Sie für die Funktionsausgänge spezielle Lichteffekte einstellen (z. B. Dimmen erlauben, Dimmwert in CV55). Der Zahlenwert (1,2,4,8 oder 16) für den gewünschten Lichteffekt wird zu den Einschaltbedingungen addiert und die Summe in das entsprechende Effektregister programmiert. Ein Wert von 0 schaltet alle Effekte des Ausgangs aus, es gibt dann nur die Zustände EIN und AUS. Ist die Leuchtstärke der Glühlämpchen durch die Digitalspannung zu hoch, können Sie diese durch &quot;Dimmen&quot; verringern. Dazu ist in die CVs für die Funktionsausgänge jeweils&#xA;ein Wert von 16 zu programmieren (Dimmen erlauben). Der Dimmwert (Helligkeit) der Lampen wird in CV55 eingestellt.">
+			<BitGroupSelector Name="" Number="0" EndNumber="4">
+				<Option Name="Aus" Value="0"></Option>
+				<Option Name="Pulsierendes Licht" Value="1"></Option>
+				<Option Name="Blitzlicht" Value="2"></Option>
+				<Option Name="Blinken Phase B" Value="4"></Option>
+				<Option Name="Blinken Phase A" Value="8"></Option>
+				<Option Name="Dimmen" Value="16"></Option>
+			</BitGroupSelector>
+			<Bit Name="Aus, wenn vorwärts" Number="6"></Bit>
+			<Bit Name="Aus, wenn rückwärts" Number="5"></Bit>
+			<Bit Name="Dimmen, wenn F3 EIN" Number="7"></Bit>
+		</CV>
+		<CV Name="Zykluszeit der Effekte/Dimmrate" LongDescription="Mit der Einerstelle (x0...x7) von CV55 wird die Dimmrate für die Funktionsausgänge eingestellt, Null bedeutet volle Helligkeit, 7 geringste Helligkeit. Mit der Zehnerstelle von CV55 (0x...9x) kann die Wiederholgeschwindigkeit der Effekte (CV49,50) eingestellt werden. Null bedeutet eine Zykluszeit von 0,5s , Wert 9 bedeutet eine Zykluszeit von 4,5s." CV="55" DefaultValue="0" Min="0" Max="97" Mode="BitMode">
+			<BitGroupDezDigit Name="Dimmrate" Number="E" Min="0" Max="7" Slider="1"></BitGroupDezDigit>
+			<BitGroupDezDigit Name="Wiederholgeschwindigkeit der Effekte" Number="Z" Min="0" Max="9" Slider="1"></BitGroupDezDigit>
+		</CV>
+	</Group>
+	<Group Name="Motorkonfiguration">
+		<CV Name="Motoransteuerfrequenz" LongDescription="Diese CV definiert die Motoransteuerfrequenz. &#xA;Bitwert 0: hochfrequente Ansteuerung (15,6kHz) für moderne DC-und Glockenankermotoren (z. B. Escap,Faulhaber)&#xA;Bitwert 1: niederfrequente Ansteuerung (120Hz) für ältere DC-Motoren und Wechselstrommotoren" CV="9" DefaultValue="0" Min="0" Max="1" ReadOnly="1" Mode="BitMode">
+			<BitOption Name="" Number="0" Option0="hochfrequent" Option1="niederfrequent"></BitOption>
+		</CV>
+		<CV Name="I-Parameter der Lastregelung" LongDescription="Mittels CV53 und CV54 können Sie die Lastregelung an viele unterschiedliche Motoren und Getriebe anpassen. Die Grundeinstellung der Lastregelung liefert mit vielen neueren Motoren ein sehr gutes Fahrverhalten. Bei älteren Motoren müssen die Parameter eventuell angepasst werden.&#xA;Der Parameter &quot;I&quot; (in CV53) bestimmt die Reaktion auf längere Sollabweichungen. Für Glockenankermotoren sollte der I-Wert kleiner (1..3), für Motoren mit großer Schwungmasse größer sein (2...8). Ist der Wert zu groß, schwankt die Geschwindigkeit stark. Wird der I-Wert erhöht, sollte der P-Wert auch etwas erhöht werden." CV="53" DefaultValue="2" Min="1" Max="63" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="P-Parameter der Lastregelung" LongDescription="Mittels CV53 und CV54 können Sie die Lastregelung an viele unterschiedliche Motoren und Getriebe anpassen. Die Grundeinstellung der Lastregelung liefert mit vielen neueren Motoren ein sehr gutes Fahrverhalten. Bei älteren Motoren müssen die Parameter eventuell angepasst werden.&#xA;Der Parameter &quot;P&quot; (in CV54) bestimmt die Härte der Regelung. Mit größerem P-Wert (16...32) regelt der Decoder stärker und eventuelle Geschwindigkeitsschwankungen werden besser ausgeglichen, allerdings steigt damit auch die Kriechgeschwindigkeit." CV="54" DefaultValue="16" Min="1" Max="63" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+		<CV Name="Geschwindigkeitstabelle" CV="67" Mode="DCCSpeedCurve">
+			<SubCV Number="0" DefaultValue="9"></SubCV>
+			<SubCV Number="1" DefaultValue="13"></SubCV>
+			<SubCV Number="2" DefaultValue="17"></SubCV>
+			<SubCV Number="3" DefaultValue="21"></SubCV>
+			<SubCV Number="4" DefaultValue="26"></SubCV>
+			<SubCV Number="5" DefaultValue="30"></SubCV>
+			<SubCV Number="6" DefaultValue="35"></SubCV>
+			<SubCV Number="7" DefaultValue="40"></SubCV>
+			<SubCV Number="8" DefaultValue="45"></SubCV>
+			<SubCV Number="9" DefaultValue="51"></SubCV>
+			<SubCV Number="10" DefaultValue="56"></SubCV>
+			<SubCV Number="11" DefaultValue="62"></SubCV>
+			<SubCV Number="12" DefaultValue="68"></SubCV>
+			<SubCV Number="13" DefaultValue="74"></SubCV>
+			<SubCV Number="14" DefaultValue="80"></SubCV>
+			<SubCV Number="15" DefaultValue="87"></SubCV>
+			<SubCV Number="16" DefaultValue="94"></SubCV>
+			<SubCV Number="17" DefaultValue="101"></SubCV>
+			<SubCV Number="18" DefaultValue="108"></SubCV>
+			<SubCV Number="19" DefaultValue="116"></SubCV>
+			<SubCV Number="20" DefaultValue="124"></SubCV>
+			<SubCV Number="21" DefaultValue="132"></SubCV>
+			<SubCV Number="22" DefaultValue="141"></SubCV>
+			<SubCV Number="23" DefaultValue="150"></SubCV>
+			<SubCV Number="24" DefaultValue="160"></SubCV>
+			<SubCV Number="25" DefaultValue="170"></SubCV>
+			<SubCV Number="26" DefaultValue="180"></SubCV>
+			<SubCV Number="27" DefaultValue="191"></SubCV>
+		</CV>
+		<CV Name="Trimmwert Rückwärts" LongDescription="Die Geschwindigkeit für rückwärts kann durch CV95 für alle Fahrstufen nach folgender Formel getrimmt werden : Motorspannung rückwärts = (Motorspannung vorwärts) * (CV95/128). Bei einem Wert von 128 (oder 0) ist die Geschwindigkeit in beiden Richtungen gleich. Hat CV95 z. B. einen Wert von 64 ist die Geschwindigkeit rückwärts nur halb so groß als in Vorwärtsrichtung." CV="95" DefaultValue="0" Min="0" Max="255" Slider="1" SliderFormat="0/1/1/0" SliderUnit=""></CV>
+	</Group>
+</Decoder>

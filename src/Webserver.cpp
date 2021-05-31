@@ -8,6 +8,8 @@
 
 #include <SPIFFS.h>
 
+#include <WiFi.h>
+#include <WiFiMulti.h>
 #include "./Webserver.h"
 // #include "Configuration.h"
 #include "configuration.h"
@@ -23,16 +25,15 @@
 #include "Page.h"
 
 bool Webserver::inAPMode = true;
+WiFiMulti wifiMulti;
 
 extern int split(String s, char listSeparator, String elements[]);
 extern String htmlPageReplace(String var);
 extern void wsReceived(String received);
 
-
 // Webserver
 #define HTTP_PORT 80
 #include <Arduino.h>
-#include <WiFi.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 
@@ -138,30 +139,35 @@ void Webserver::webconfig() {
   WiFi.setHostname((HOST_NAME + index).c_str()); 
   inAPMode = true;
 
-  String ssid = Pref::get(prefNameSSID);
-  String passwd = Pref::get(prefNamePasswd);
-  Serial.printf("Gelesen SSID: %s, passwd: %s\n", ssid.c_str(), passwd.c_str());
+  String ssid = Pref::get(prefNameSSID); ssid.trim();
+  String passwd = Pref::get(prefNamePasswd); passwd.trim();
+  String ssid2 = Pref::get(prefNameSSID2); ssid2.trim();
+  String passwd2 = Pref::get(prefNamePasswd2); passwd2.trim();
+  Serial.printf("Gelesen SSID: %s (alternativ: %s), passwd: %s (alternativ: %s)\n", ssid.c_str(), ssid2.c_str(), passwd.c_str(), passwd2.c_str());
 
   // WLAN-Daten wurden bereits eingegeben (und gespeichert)
-  if (ssid != "" && passwd != "") {
+  if ((ssid != "" && passwd != "") || (ssid2 != "" && passwd2 != "")) {
 
       inAPMode = false;
 
       // WLAN-Bildschirm mit Countdown
-      WiFi.begin(ssid.c_str(), passwd.c_str());
+      wifiMulti.addAP(ssid.c_str(), passwd.c_str());
+      wifiMulti.addAP(ssid2.c_str(), passwd2.c_str());
 
       M5.lcd.fillScreen(TFT_BLUE);
       M5.lcd.setTextColor(TFT_WHITE);
       M5.lcd.setTextDatum(CC_DATUM);
-      M5.lcd.drawString("Verbinde mit WLAN SSID", TFT_W / 2, TFT_H * 0.30, 2);
-      M5.lcd.drawString(ssid, TFT_W / 2, TFT_H * 0.50, 4);
+      M5.lcd.drawString(String(PRODUCT_NAME) + " " + PRODUCT_VERSION, TFT_W / 2, TFT_H * 0.15, 4);
+      M5.lcd.drawString("Verbinde mit WLAN SSID(s)", TFT_W / 2, TFT_H * 0.30, 2);
+      M5.lcd.drawString(ssid + (ssid2 == "" ? "" : " oder "), TFT_W / 2, TFT_H * 0.50, 4);
+      if (ssid2 != "") M5.lcd.drawString(ssid2, TFT_W / 2, TFT_H * 0.60, 4);
 
-      int connCount = 50; int pixels=30; 
+
+      int connCount = 10; int pixels=30; 
       // while (WiFi.waitForConnectResult() != WL_CONNECTED && connCount > 0) { // scheint dann nie Countdown auszulösen
-      while (WiFi.status() != WL_CONNECTED && connCount > 0) {
+      while (wifiMulti.run() != WL_CONNECTED && connCount > 0) {
           M5.lcd.fillRect(0, TFT_H * 0.80 - pixels/2, TFT_W, pixels, TFT_BLUE);
           M5.lcd.drawString(String(connCount--), TFT_W / 2, TFT_H * 0.80, 4);
-          yield();
           delay(500);
       }
 
@@ -215,7 +221,7 @@ void Webserver::webconfig() {
 //
 
 void notFound(AsyncWebServerRequest* request) {
-  request->send(404, "text/html", "Seite nicht gefunden. Ist sie &uuml;ber das Uploadtool in den SPIFFS-Bereich geladen worden?");
+  request->send(404, "text/html", "Seite nicht gefunden. Ist sie &uuml;ber <tt>spiffs run -t uploadfs</tt> in den SPIFFS-Bereich geladen worden?");
 }
 
 void Webserver::begin() {
@@ -268,8 +274,6 @@ void Webserver::begin() {
 // Durch processor() geschickte Webseiten werden auf %PLATZHALTER% geprüft und diese hier ersetzt
 
 String Webserver::processor(const String& var) {
-
-  Serial.printf("Replace %s\n", var.c_str());
 
   // ==== Spezielle Ersetzungen ===================================================================
 
