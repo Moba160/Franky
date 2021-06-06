@@ -492,8 +492,8 @@ void Webserver::onWsEvent(AsyncWebSocket* server, AsyncWebSocketClient* client, 
     char* buf = new char[len + 1];
     memcpy(buf, data, len);
     buf[len] = 0;
-    String received = String(buf);
-    String elements[2];
+    String received = String(buf);   
+    String elements[10];
 
     // "purge" -> Preferences löschen
     if (received == "purge") {

@@ -18,6 +18,11 @@ connection.onmessage = function (e) {
 	var s = '' + e.data;
 	console.log(s);
 
+	if (s.startsWith("cv")) {
+		cvreadresult();
+		return;
+	}
+
 	// name=wert: Ersetzung von Teilen der HTML-Seite (dynamische Updates)
 	var element = s.split("=");
 

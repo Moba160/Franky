@@ -279,7 +279,7 @@ void LocoPage::buttonPressed(M5Btn::ButtonType button) {
   // Automatischer Betrieb: Fahrstufe 0 setzen oder Richtungswechsel
   } else if (button == M5Btn::RotaryKnob && focussedWidget() == targetSpeed) {
     // Wenn schon bei 0 -> Richtungswechsel
-    if (targetSpeed->getValue() == 0) {
+    if (speed->getValue() == 0) {
       direction->toggle();
       loco[channel]->forward = direction->getValue();
     } else {

@@ -303,6 +303,11 @@ void Page::progStateChanged(BoolState progState) {
   Webserver::send("Z21_PROGMODE", Z21::toString(Z21::getProgState(), "Aktiv", "Inaktiv"));  
 }
 
+void Page::progResult(ProgResult result, int value) {
+  if (result == ProgResult::Success) Webserver::send("cv=" + String(value));
+  else Webserver::send("cvFailed");
+}
+
 
 
 void Page::traceEvent(FromToZ21 direction, long diffLastSentReceived, String message, String parameters) {

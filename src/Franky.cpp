@@ -3,6 +3,9 @@
 #include "configuration.h"
 #include "Pref.h"
 #include "Loco.h"
+#include <M5Btn.h>
+
+extern int split(String s, char listSeparator, String elements[]);
 
 // ----------------------------------------------------------------------------------------------------
 // Webserver.cpp ist allgemein geschrieben. Die Franky-Spezifik findet hier statt
@@ -147,5 +150,18 @@ String htmlPageReplace(String var) {
 }
 
 void wsReceived(String received) {
+
+  String elements[10];
+  int n=split(received, '|', elements);
+
+  if (elements[0] == "pomWrite") {
+    // M5Btn::ledRing(200, 200, 200,  20); 
+    Z21::LAN_X_CV_POM_WRITE_BYTE(elements[1].toInt(), elements[2].toInt(), elements[3].toInt());
+
+  } else if (elements[0] == "cvWrite") {
+    // Z21::LAN_X_CV_WRITE(elements[1].toInt(), elements[2].toInt());
+    M5Btn::ledRing(200, 200, 200,  20); 
+  }
+
   
 }

@@ -27,7 +27,8 @@
 .green { background-color: #4CAF50; }
 </style>
 
-<script type="text/javascript" src="decoder.js"></script> 
+<script type="text/javascript" src="websocket.js"/> 
+<script type="text/javascript" src="decoder.js"/> 
 
 <body>
 

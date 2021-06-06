@@ -1,20 +1,29 @@
+// ----------------------------------------------------------------------------------------------------
+//
+
 function pomwrite(addr, cv, val) {
 	console.log("POM Write: CV" + cv + "=" + val);
+	connection.send("pomWrite|" + addr + "|" + cv + "|" + val);
 }
+
+// ----------------------------------------------------------------------------------------------------
+//
 
 function cvwrite(cv, val) {
 	console.log("CV Write: CV" + cv + "=" + val);
+	connection.send("cvWrite|" + cv + "|" + val);
 }
+
 
 function cvread(cv) {
 	console.log("CV Read: CV" + cv);
 }
 
-function cvreadresult(cv, val) {
-	console.log("CV Read result: CV" + cv + "=" + val);
+function cvreadresult(success, val) {
+	console.log("CV Read result: CV" + cv + " " + val);
 }
 
-//----------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------
 // Wenn Bit-Checkbox gesetzt, wird in zugehöriger CV das Bit ebenfalls gesetzt, ansonsten gelöscht
 // Die CV hat die Id "CV#", z.B. CV29
 // Die Bitcheckbox die Id "BitCV.#", z.B. Bit29.1
