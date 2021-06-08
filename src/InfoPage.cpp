@@ -50,7 +50,8 @@ void InfoPage::setVisible(bool visible, bool clearScreen) {
 // Die Änderung der Buttoncaption erfolgt indirekt über die Rückmeldung
 
 void InfoPage::buttonPressed(M5Btn::ButtonType button) {
-  if (!visible) return;
+
+  if (getFunction(button) != FN_TRACKPOWER || !visible) return;
 
   bool on = Z21::getTrackPowerState() == BoolState::On;
   on = !on;

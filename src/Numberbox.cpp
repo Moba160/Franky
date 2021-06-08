@@ -41,7 +41,7 @@ void Numberbox::draw(bool visible) {
     tft->setTextDatum(alignment);
     sprintf(buf, pattern.c_str(), value);
     tft->drawString(blank, x, y, textSize);
-    if (visible) tft->drawString(String(buf), x, y, textSize); else Serial.printf("löschen %d\n", value);
+    if (visible) tft->drawString(String(buf), x, y, textSize); 
 }
 
 // ----------------------------------------------------------------------------------------------------
